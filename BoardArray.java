@@ -34,11 +34,22 @@ public class BoardArray {
   }
 
   public void printBoard() {
+
     int row, col;
+
+    System.out.print("  ");
+
+    // Prints the column numbers on top of the board
+    for (col = 0; col < width - 2; col++)
+    {
+        System.out.print(col + 1 + " ");
+    }
+
+    System.out.println();
 
     for (row = 0; row < height; row++) {
       for (col = 0; col < width; col++) {
-        System.out.print(boardArray[row][col]);
+        System.out.print(boardArray[row][col]+ " ");
       }
       System.out.println();
     }
