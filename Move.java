@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Move {
 
   private int player;
-  private Scanner input = new Scanner(System.in);
+  private Scanner in = new Scanner(System.in);
   private BoardArray boardArray;
 
   public Move(int player, BoardArray boardArray) {
@@ -16,7 +16,7 @@ public class Move {
     int i = 1;
 
     System.out.print("Player " + player + " enter column number: ");
-    int column = input.nextInt();
+    int column = in.nextInt();
 
     // If the column is full, ask the player to enter a valid column
     while (boardArray.getBoard()[1][column] != ' ') {
@@ -24,8 +24,8 @@ public class Move {
       for (int col = 0; col < boardArray.getWidth(); col++) {
         // If there are any columns that aren't full, ask the player to enter a valid column
         if (boardArray.getBoard()[1][col] == ' ') {
-          System.out.print("Column is full, enter a valid column: ");
-          column = input.nextInt();
+          System.out.print("Invalid column, enter a valid column: ");
+          column = in.nextInt();
 
           // Breaks the for loop
           col = boardArray.getWidth();
@@ -45,7 +45,7 @@ public class Move {
       ask the player to enter a valid column */
       if (i == boardArray.getWidth() - 1) {
         System.out.print("Invalid column, enter a valid column: ");
-        column = input.nextInt();
+        column = in.nextInt();
 
         // Reset i to 1 to check if the column is valid again in the while loop
         i = 1;

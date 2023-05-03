@@ -1,6 +1,19 @@
+import java.util.Scanner;
+
 public class Main {
 
   public static void main(String[] args) {
+
+    Scanner input = new Scanner(System.in);
+
+    System.out.print("Enter number of players: ");
+    int numPlayers = input.nextInt();
+
+    // If the number of players is invalid, ask the user to enter a valid number of players
+    while (numPlayers != 1 && numPlayers != 2) {
+      System.out.print("Invalid number of players, enter a valid number of players: ");
+      numPlayers = input.nextInt();
+    }
 
     BoardArray boardArray = new BoardArray(new char[7][8], 8, 7);
 
@@ -35,5 +48,6 @@ public class Main {
       // Checks if player 2 has won and assigns the value to p2Win
       p2Win = move2.CheckWin();
     }
+    input.close();
   }
 }
