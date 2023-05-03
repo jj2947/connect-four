@@ -213,8 +213,8 @@ public class Move {
     int col;
     int index;
 
-    LongestChain longestChain = new LongestChain(boardArray);
-    ArrayList<Position> nextMoves = longestChain.getNextMoves();
+    NextMove next = new NextMove(boardArray);
+    ArrayList<Position> nextMoves = next.getNextMoves();
 
     Random rand = new Random();
 

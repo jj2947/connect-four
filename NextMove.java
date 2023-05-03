@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class LongestChain {
+public class NextMove {
 
   private BoardArray boardArray;
   private int count;
@@ -10,7 +10,7 @@ public class LongestChain {
   private ArrayList<Position> positions;
   private char symbol;
 
-  public LongestChain(BoardArray boardArray) {
+  public NextMove(BoardArray boardArray) {
     this.boardArray = boardArray;
     positions = new ArrayList<>();
     prevCount = 0;
