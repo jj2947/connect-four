@@ -19,7 +19,14 @@ public class NextMove {
 
   public ArrayList<Position> getNextMoves() {
 
-    // Finds longest vertical chain
+    getLongestDiagonal();
+    getLongestVertical();
+    getLongestHorizontal();
+    return positions;
+  }
+
+  // Finds longest vertical chain
+  private ArrayList<Position> getLongestVertical() {
     for (col = 1; col < boardArray.getWidth() - 1; col++) {
       count = 0;
       for (row = boardArray.getHeight() - 1; row >= 0; row--) {
@@ -50,8 +57,11 @@ public class NextMove {
         }
       }
     }
+    return positions;
+  }
 
-    // Finds longest horizontal chain
+  // Finds longest horizontal chain
+  private ArrayList<Position> getLongestHorizontal() {
     for (row = boardArray.getHeight() - 1; row >= 0; row--) {
       count = 0;
       for (col = 1; col < boardArray.getWidth() - 1; col++) {
@@ -82,23 +92,11 @@ public class NextMove {
         }
       }
     }
-
-    // Finds longest diagonal chain
-    if (getLongestDiagonal().isEmpty()) {
-      return positions;
-    } else if (getLongestDiagonal().get(0).getCount() > positions.get(0).getCount()) {
-      positions.clear();
-      positions.addAll(getLongestDiagonal());
-    } else if (getLongestDiagonal().get(0).getCount() == positions.get(0).getCount()) {
-      positions.addAll(getLongestDiagonal());
-    }
-
     return positions;
   }
 
   // Finds longest diagonal chain
   private ArrayList<Position> getLongestDiagonal() {
-    ArrayList<Position> diagonalPositions = new ArrayList<>();
 
     int maxRow, maxCol, count;
     count = 0;
@@ -117,35 +115,35 @@ public class NextMove {
             && boardArray.getBoard()[row - 1][col + 1] == symbol
             && boardArray.getBoard()[row - 2][col + 2] == symbol) {
           count = 3;
-          if (diagonalPositions.isEmpty()) {
+          if (positions.isEmpty()) {
             Position position = new Position(3, row - 3, col + 3);
-            diagonalPositions.add(position);
-          } else if (diagonalPositions.get(diagonalPositions.size() - 1).getCount() < count) {
-            diagonalPositions.clear();
+            positions.add(position);
+          } else if (positions.get(positions.size() - 1).getCount() < count) {
+            positions.clear();
           }
           Position position = new Position(3, row - 3, col + 3);
-          diagonalPositions.add(position);
+          positions.add(position);
         } else if (count < 3) {
           if (maxRow >= -1
               && maxCol < boardArray.getWidth() + 1
               && boardArray.getBoard()[row][col] == symbol
               && boardArray.getBoard()[row - 1][col + 1] == symbol) {
             count = 2;
-            if (diagonalPositions.isEmpty()) {
+            if (positions.isEmpty()) {
               Position position = new Position(2, row - 2, col + 2);
-              diagonalPositions.add(position);
-            } else if (diagonalPositions.get(diagonalPositions.size() - 1).getCount() < count) {
-              diagonalPositions.clear();
+              positions.add(position);
+            } else if (positions.get(positions.size() - 1).getCount() < count) {
+              positions.clear();
             }
             Position position = new Position(2, row - 2, col + 2);
-            diagonalPositions.add(position);
+            positions.add(position);
           } else if (count < 2) {
             if (maxRow >= -2
                 && maxCol < boardArray.getWidth() + 2
                 && boardArray.getBoard()[row][col] == symbol) {
               count = 1;
               Position position = new Position(1, row - 1, col + 1);
-              diagonalPositions.add(position);
+              positions.add(position);
             }
           }
         }
@@ -167,38 +165,38 @@ public class NextMove {
             && boardArray.getBoard()[row - 1][col - 1] == symbol
             && boardArray.getBoard()[row - 2][col - 2] == symbol) {
           count = 3;
-          if (diagonalPositions.isEmpty()) {
+          if (positions.isEmpty()) {
             Position position = new Position(3, row - 3, col - 3);
-            diagonalPositions.add(position);
-          } else if (diagonalPositions.get(diagonalPositions.size() - 1).getCount() < count) {
-            diagonalPositions.clear();
+            positions.add(position);
+          } else if (positions.get(positions.size() - 1).getCount() < count) {
+            positions.clear();
           }
           Position position = new Position(3, row - 3, col - 3);
-          diagonalPositions.add(position);
+          positions.add(position);
         } else if (count < 3) {
           if (maxRow >= -1
               && maxCol >= -1
               && boardArray.getBoard()[row][col] == symbol
               && boardArray.getBoard()[row - 1][col - 1] == symbol) {
             count = 2;
-            if (diagonalPositions.isEmpty()) {
+            if (positions.isEmpty()) {
               Position position = new Position(2, row - 2, col - 2);
-              diagonalPositions.add(position);
-            } else if (diagonalPositions.get(diagonalPositions.size() - 1).getCount() < count) {
-              diagonalPositions.clear();
+              positions.add(position);
+            } else if (positions.get(positions.size() - 1).getCount() < count) {
+              positions.clear();
             }
             Position position = new Position(2, row - 2, col - 2);
-            diagonalPositions.add(position);
+            positions.add(position);
           } else if (count < 2) {
             if (maxRow >= -2 && maxCol >= -2 && boardArray.getBoard()[row][col] == symbol) {
               count = 1;
               Position position = new Position(1, row - 1, col - 1);
-              diagonalPositions.add(position);
+              positions.add(position);
             }
           }
         }
       }
     }
-    return diagonalPositions;
+    return positions;
   }
 }
