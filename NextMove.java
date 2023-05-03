@@ -17,7 +17,11 @@ public class NextMove {
 
     if (blockMoves.isEmpty()) {
       return getNext();
-    } else if (blockMoves.get(0).getCount() < 2) {
+    }
+
+    if (getNext().isEmpty()) {
+      return blockMoves;
+    } else if (getNext().get(0).getCount() == 3 || blockMoves.get(0).getCount() < 2) {
       return getNext();
     } else {
       return blockMoves;
@@ -28,13 +32,9 @@ public class NextMove {
     ArrayList<Position> nextMoves = new ArrayList<>();
     char symbol = 'O';
 
-    nextMoves = null;
+    nextMoves = getLongestDiagonal(symbol);
 
-    if (!(getLongestDiagonal(symbol)).isEmpty()) {
-      nextMoves = getLongestDiagonal(symbol);
-    }
-
-    if (nextMoves == null) {
+    if (nextMoves.isEmpty()) {
       nextMoves = getLongestHorizontal(symbol);
     } else if (!(getLongestHorizontal(symbol).isEmpty())) {
       if (getLongestHorizontal(symbol).get(0).getCount() > nextMoves.get(0).getCount()) {
@@ -45,7 +45,7 @@ public class NextMove {
       }
     }
 
-    if (nextMoves == null) {
+    if (nextMoves.isEmpty()) {
       nextMoves = getLongestVertical(symbol);
     } else if (!(getLongestVertical(symbol).isEmpty())) {
       if (getLongestVertical(symbol).get(0).getCount() > nextMoves.get(0).getCount()) {
@@ -64,15 +64,11 @@ public class NextMove {
     ArrayList<Position> blockMoves = new ArrayList<>();
     char symbol = 'X';
 
-    blockMoves = null;
+    blockMoves = getLongestDiagonal(symbol);
 
-    if (!(getLongestDiagonal(symbol)).isEmpty()) {
-      blockMoves = getLongestDiagonal(symbol);
-    }
-
-    if (blockMoves == null) {
+    if (blockMoves.isEmpty()) {
       blockMoves = getLongestHorizontal(symbol);
-    } else if (!(getLongestHorizontal(symbol).isEmpty()) && !(blockMoves.isEmpty())) {
+    } else if (!(getLongestHorizontal(symbol).isEmpty())) {
       if (getLongestHorizontal(symbol).get(0).getCount() > blockMoves.get(0).getCount()) {
         blockMoves.clear();
         blockMoves.addAll(getLongestHorizontal(symbol));
@@ -81,9 +77,9 @@ public class NextMove {
       }
     }
 
-    if (blockMoves == null) {
+    if (blockMoves.isEmpty()) {
       blockMoves = getLongestVertical(symbol);
-    } else if (!(getLongestVertical(symbol).isEmpty()) && !(blockMoves.isEmpty())) {
+    } else if (!(getLongestVertical(symbol).isEmpty())) {
       if (getLongestVertical(symbol).get(0).getCount() > blockMoves.get(0).getCount()) {
         blockMoves.clear();
         blockMoves.addAll(getLongestVertical(symbol));
@@ -108,7 +104,7 @@ public class NextMove {
         // If the symbol is not the same as the player's symbol, reset count and continue the loop
         else if (boardArray.getBoard()[row][col] != symbol && count >= 1) {
 
-          if (validMove(row, col)) {
+          if (validMove("vertical", row, col, count, symbol)) {
             addMove(verticalMoves, count, row, col);
           }
           count = 0;
@@ -131,7 +127,7 @@ public class NextMove {
 
         // If the symbol is not the same as the player's symbol, reset count and continue the loop
         else if (boardArray.getBoard()[row][col] != symbol && count >= 1) {
-          if (validMove(row, col)) {
+          if (validMove("right horizontal", row, col, count, symbol)) {
             addMove(horizontalMoves, count, row, col);
           }
           count = 0;
@@ -149,7 +145,7 @@ public class NextMove {
 
         // If the symbol is not the same as the player's symbol, reset count and continue the loop
         else if (boardArray.getBoard()[row][col] != symbol && count >= 1) {
-          if (validMove(row, col)) {
+          if (validMove("left horizontal", row, col, count, symbol)) {
             addMove(horizontalMoves, count, row, col);
           }
           count = 0;
@@ -166,6 +162,7 @@ public class NextMove {
     int maxRow, maxCol, count;
     count = 0;
 
+    // Left diagonal
     for (row = 0; row < boardArray.getHeight(); row++) {
       for (col = 0; col < boardArray.getWidth(); col++) {
         // Set the maximum row and column to check that they will be within the boardArray bounds
@@ -180,27 +177,27 @@ public class NextMove {
             && boardArray.getBoard()[row - 1][col + 1] == symbol
             && boardArray.getBoard()[row - 2][col + 2] == symbol) {
 
-          if (validMove(row - 3, col + 3)) {
+          if (validMove("", row - 3, col + 3, 3, symbol)) {
             count = 3;
             addMove(diagonalMoves, count, row - 3, col + 3);
           }
 
-        } else if (count < 3) {
+        } else if (count <= 2) {
           if (maxRow >= -1
               && maxCol < boardArray.getWidth() + 1
               && boardArray.getBoard()[row][col] == symbol
               && boardArray.getBoard()[row - 1][col + 1] == symbol) {
 
-            if (validMove(row - 2, col + 2)) {
+            if (validMove("left diagonal", row - 2, col + 2, 2, symbol)) {
               count = 2;
               addMove(diagonalMoves, count, row - 2, col + 2);
             }
 
-          } else if (count < 2) {
+          } else {
             if (maxRow >= -2
                 && maxCol < boardArray.getWidth() + 2
                 && boardArray.getBoard()[row][col] == symbol) {
-              if (validMove(row - 1, col + 1)) {
+              if (validMove("left diagonal", row - 1, col + 1, 1, symbol)) {
                 count = 1;
                 addMove(diagonalMoves, count, row - 1, col + 1);
               }
@@ -224,7 +221,7 @@ public class NextMove {
             && boardArray.getBoard()[row][col] == symbol
             && boardArray.getBoard()[row - 1][col - 1] == symbol
             && boardArray.getBoard()[row - 2][col - 2] == symbol) {
-          if (validMove(row - 3, col - 3)) {
+          if (validMove("", row - 3, col - 3, 3, symbol)) {
             count = 3;
             addMove(diagonalMoves, count, row - 3, col - 3);
           }
@@ -233,13 +230,13 @@ public class NextMove {
               && maxCol >= -1
               && boardArray.getBoard()[row][col] == symbol
               && boardArray.getBoard()[row - 1][col - 1] == symbol) {
-            if (validMove(row - 2, col - 2)) {
+            if (validMove("right diagonal", row - 2, col - 2, 2, symbol)) {
               count = 2;
               addMove(diagonalMoves, count, row - 2, col - 2);
             }
-          } else if (count < 2) {
+          } else {
             if (maxRow >= -2 && maxCol >= -2 && boardArray.getBoard()[row][col] == symbol) {
-              if (validMove(row - 1, col - 1)) {
+              if (validMove("right diagonal", row - 1, col - 1, 3, symbol)) {
                 count = 1;
                 addMove(diagonalMoves, count, row - 1, col - 1);
               }
@@ -268,11 +265,98 @@ public class NextMove {
     return nextMoves;
   }
 
-  private boolean validMove(int row, int col) {
-    if (boardArray.getBoard()[row][col] == ' ' && boardArray.getBoard()[row + 1][col] != ' ') {
-      return true;
-    } else {
+  private boolean validMove(String direction, int row, int col, int count, char symbol) {
+    boolean result = false;
+
+    if (boardArray.getBoard()[row][col] != ' ' || boardArray.getBoard()[row + 1][col] == ' ') {
       return false;
     }
+
+    if (count == 2) {
+      switch (direction) {
+        case "left horizontal":
+          if (boardArray.getBoard()[row][col - 1] == ' ') {
+            result = true;
+          }
+          break;
+
+        case "right horizontal":
+          if (boardArray.getBoard()[row][col + 1] == ' ') {
+            result = true;
+          }
+          break;
+
+        case "left diagonal":
+          int maxRow = row - 1;
+          int maxCol = col + 1;
+          if (maxRow >= 0
+              && maxCol < boardArray.getWidth()
+              && boardArray.getBoard()[row - 1][col + 1] == ' ') {
+            result = true;
+          }
+          break;
+
+        case "right diagonal":
+          maxRow = row - 1;
+          maxCol = col - 1;
+          if (maxRow >= 0 && maxCol >= 0 && boardArray.getBoard()[row - 1][col - 1] == ' ') {
+            result = true;
+          }
+          break;
+
+        case "vertical":
+          if (boardArray.getBoard()[row - 1][col] == ' ') {
+            result = true;
+          }
+          break;
+      }
+
+    } else if (count == 1) {
+      switch (direction) {
+        case "left horizontal":
+          if (boardArray.getBoard()[row][col - 1] == ' '
+              && boardArray.getBoard()[row][col - 2] == ' ') {
+            result = true;
+          }
+          break;
+
+        case "right horizontal":
+          if (boardArray.getBoard()[row][col + 1] == ' '
+              && boardArray.getBoard()[row][col + 2] == ' ') {
+            result = true;
+          }
+          break;
+
+        case "left diagonal":
+          int maxRow = row - 2;
+          int maxCol = col + 2;
+          if (maxRow >= 0
+              && maxCol < boardArray.getWidth()
+              && boardArray.getBoard()[row - 1][col + 1] == ' '
+              && boardArray.getBoard()[row - 2][col + 2] == ' ') {
+            result = true;
+          }
+          break;
+
+        case "right diagonal":
+          maxRow = row - 2;
+          maxCol = col - 2;
+          if (maxRow >= 0
+              && maxCol >= 0
+              && boardArray.getBoard()[row - 1][col - 1] == ' '
+              && boardArray.getBoard()[row - 2][col - 2] == ' ') {
+            result = true;
+          }
+          break;
+
+        case "vertical":
+          if (boardArray.getBoard()[row - 1][col] == ' '
+              && boardArray.getBoard()[row - 2][col] == ' ') {
+            result = true;
+          }
+      }
+    }
+
+    return result;
   }
 }
