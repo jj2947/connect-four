@@ -10,7 +10,7 @@ public class BoardArray {
     this.height = height;
   }
 
-  public void InitialiseBoard() {
+  public void initialiseBoard() {
 
     int row, col, column;
 
@@ -33,14 +33,22 @@ public class BoardArray {
     }
   }
 
-    public void PrintBoard() {
-        int row, col;
-    
-        for (row = 0; row < height; row++) {
-        for (col = 0; col < width; col++) {
-            System.out.print(boardArray[row][col]);
-        }
-        System.out.println();
-        }
+  public void printBoard() {
+    int row, col;
+
+    for (row = 0; row < height; row++) {
+      for (col = 0; col < width; col++) {
+        System.out.print(boardArray[row][col]);
+      }
+      System.out.println();
     }
+  }
+
+  public char[][] getBoard() {
+    return boardArray;
+  }
+
+  public void setBoard(int row, int col, char symbol) {
+    boardArray[row][col] = symbol;
+  }
 }
