@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Move {
@@ -203,5 +205,68 @@ public class Move {
 
     // If the player has not won, return 0
     return 0;
+  }
+
+  public int getMove2() {
+
+    int nextCol;
+    int col;
+    int i = 0;
+    int valid = 0;
+
+    LongestChain longestChain = new LongestChain(boardArray);
+    ArrayList<Position> nextMoves = longestChain.getNextMoves();
+
+    Random rand = new Random();
+
+    if (nextMoves.size() == 0) {
+      nextCol = rand.nextInt(boardArray.getWidth());
+    } else {
+      Position nextMove = nextMoves.get(rand.nextInt(nextMoves.size()));
+     nextCol = nextMove.getCol();
+    }
+
+    // If the column is full, ask the player to enter a valid column
+    while (boardArray.getBoard()[1][nextCol] != ' ') {
+      // Loops through all columns to check if there are any columns that aren't full
+      for (col = 0; col < boardArray.getWidth(); col++) {
+        // If there are any columns that aren't full, ask the player to enter a valid column
+        if (boardArray.getBoard()[1][col] == ' ') {
+            if (nextMoves.size() == 0) {
+                nextCol = rand.nextInt(boardArray.getWidth());
+              } else {
+                Position nextMove = nextMoves.get(rand.nextInt(nextMoves.size()));
+               nextCol = nextMove.getCol();
+              }
+
+          // Breaks the for loop
+          col = boardArray.getWidth();
+        }
+      }
+    }
+
+    // Ignore any invalid columns
+    while (valid == 0 && i < boardArray.getWidth() - 1) {
+      if (i == nextCol) {
+        valid = 1;
+        break;
+      }
+      i++;
+
+      /* If the column is invalid (i has already looped through all columns),
+      ask the player to enter a valid column */
+      if (i == boardArray.getWidth() - 1) {
+        if (nextMoves.size() == 0) {
+            nextCol = rand.nextInt(boardArray.getWidth());
+          } else {
+            Position nextMove = nextMoves.get(rand.nextInt(nextMoves.size()));
+           nextCol = nextMove.getCol();
+          }
+
+        // Reset i to 1 to check if the column is valid again in the while loop
+        i = 1;
+      }
+    }
+    return nextCol;
   }
 }

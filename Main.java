@@ -25,28 +25,56 @@ public class Main {
 
     /* Main game loop */
 
-    // While neither player has won, continue the game
-    while (p1Win == 0 && p2Win == 0) {
-      // Player 1's turn
-      Move move1 = new Move(1, boardArray);
-      move1.makeMove(move1.getMove());
-      boardArray.printBoard();
+    if (numPlayers == 2) {
+      // While neither player has won, continue the game
+      while (p1Win == 0 && p2Win == 0) {
+        // Player 1's turn
+        Move move1 = new Move(1, boardArray);
+        move1.makeMove(move1.getMove());
+        boardArray.printBoard();
 
-      // Checks if player 1 has won and assigns the value to p1Win
-      p1Win = move1.CheckWin();
+        // Checks if player 1 has won and assigns the value to p1Win
+        p1Win = move1.CheckWin();
 
-      // If player 1 has won, break the while loop
-      if (p1Win == 1) {
-        break;
+        // If player 1 has won, break the while loop
+        if (p1Win == 1) {
+          break;
+        }
+
+        // Player 2's turn
+        Move move2 = new Move(2, boardArray);
+        move2.makeMove(move2.getMove());
+        boardArray.printBoard();
+
+        // Checks if player 2 has won and assigns the value to p2Win
+        p2Win = move2.CheckWin();
       }
+    }
 
-      // Player 2's turn
-      Move move2 = new Move(2, boardArray);
-      move2.makeMove(move2.getMove());
-      boardArray.printBoard();
+    if (numPlayers == 1) {
+        // While neither player has won, continue the game
+      while (p1Win == 0 && p2Win == 0) {
+        // Player 1's turn
+        Move move1 = new Move(1, boardArray);
+        move1.makeMove(move1.getMove());
+        boardArray.printBoard();
 
-      // Checks if player 2 has won and assigns the value to p2Win
-      p2Win = move2.CheckWin();
+        // Checks if player 1 has won and assigns the value to p1Win
+        p1Win = move1.CheckWin();
+
+        // If player 1 has won, break the while loop
+        if (p1Win == 1) {
+          break;
+        }
+
+        // Computer's turn
+        Move move2 = new Move(2, boardArray);
+        move2.makeMove(move2.getMove2());
+        boardArray.printBoard();
+
+        // Checks if player 2 has won and assigns the value to p2Win
+        p2Win = move2.CheckWin();
+      }
     }
     input.close();
   }

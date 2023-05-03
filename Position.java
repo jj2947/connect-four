@@ -2,10 +2,12 @@ public class Position {
     
     private int row;
     private int col;
+    private int count;
     
-    public Position(int row, int col) {
+    public Position(int count, int row, int col) {
         this.row = row;
         this.col = col;
+        this.count = count;
     }
     
     public int getRow() {
@@ -14,5 +16,9 @@ public class Position {
     
     public int getCol() {
         return col;
+    }
+
+    public int getCount() {
+        return count;
     }
 }
