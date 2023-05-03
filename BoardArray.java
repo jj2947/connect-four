@@ -1,0 +1,35 @@
+public class BoardArray {
+
+  char boardArray[][];
+  int width;
+  int height;
+
+  public BoardArray(char boardArray[][], int width, int height) {
+    this.boardArray = boardArray;
+    this.width = width;
+    this.height = height;
+  }
+
+  void InitialiseBoard() {
+
+    int row, col, column;
+
+    for (row = 0; row < height; row++) {
+      column = 0;
+      for (col = 0; col < width; col++) {
+        // If it's the first or last row, character is '-'
+        if (row == 0 || row == height - 1) {
+          boardArray[row][column] = '-';
+        }
+
+        // If its the first of last column character is '|'
+        else if (col == 0 || col == width - 1) {
+          boardArray[row][column] = '|';
+        } else {
+          boardArray[row][column] = ' ';
+        }
+        column++;
+      }
+    }
+  }
+}
