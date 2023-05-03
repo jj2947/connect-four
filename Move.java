@@ -211,8 +211,7 @@ public class Move {
 
     int nextCol;
     int col;
-    int i = 0;
-    int valid = 0;
+    int index;
 
     LongestChain longestChain = new LongestChain(boardArray);
     ArrayList<Position> nextMoves = longestChain.getNextMoves();
@@ -220,53 +219,38 @@ public class Move {
     Random rand = new Random();
 
     if (nextMoves.size() == 0) {
-      nextCol = rand.nextInt(boardArray.getWidth());
+      index = rand.nextInt(boardArray.getWidth());
+      nextCol = index;
     } else {
-      Position nextMove = nextMoves.get(rand.nextInt(nextMoves.size()));
-     nextCol = nextMove.getCol();
+      index = rand.nextInt(nextMoves.size());
+      Position nextMove = nextMoves.get(index);
+      nextCol = nextMove.getCol();
     }
 
     // If the column is full, ask the player to enter a valid column
-    while (boardArray.getBoard()[1][nextCol] != ' ') {
+    while (boardArray.getBoard()[1][nextCol] != ' ')
+
       // Loops through all columns to check if there are any columns that aren't full
       for (col = 0; col < boardArray.getWidth(); col++) {
-        // If there are any columns that aren't full, ask the player to enter a valid column
-        if (boardArray.getBoard()[1][col] == ' ') {
-            if (nextMoves.size() == 0) {
-                nextCol = rand.nextInt(boardArray.getWidth());
-              } else {
-                Position nextMove = nextMoves.get(rand.nextInt(nextMoves.size()));
-               nextCol = nextMove.getCol();
-              }
 
-          // Breaks the for loop
+        // If there is a column that isn't full, set nextCol to that column
+        if (boardArray.getBoard()[1][col] == ' ') {
+          if (index < nextMoves.size()) {
+            nextMoves.remove(index);
+          }
+          if (nextMoves.size() == 0) {
+            index = rand.nextInt(boardArray.getWidth());
+            nextCol = index;
+          } else {
+            index = rand.nextInt(nextMoves.size());
+            Position nextMove = nextMoves.get(index);
+            nextCol = nextMove.getCol();
+          }
+
+          // Resets the for loop and while loop
           col = boardArray.getWidth();
         }
       }
-    }
-
-    // Ignore any invalid columns
-    while (valid == 0 && i < boardArray.getWidth() - 1) {
-      if (i == nextCol) {
-        valid = 1;
-        break;
-      }
-      i++;
-
-      /* If the column is invalid (i has already looped through all columns),
-      ask the player to enter a valid column */
-      if (i == boardArray.getWidth() - 1) {
-        if (nextMoves.size() == 0) {
-            nextCol = rand.nextInt(boardArray.getWidth());
-          } else {
-            Position nextMove = nextMoves.get(rand.nextInt(nextMoves.size()));
-           nextCol = nextMove.getCol();
-          }
-
-        // Reset i to 1 to check if the column is valid again in the while loop
-        i = 1;
-      }
-    }
     return nextCol;
   }
 }
