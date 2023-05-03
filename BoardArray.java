@@ -1,8 +1,8 @@
 public class BoardArray {
 
-  char boardArray[][];
-  int width;
-  int height;
+  private char boardArray[][];
+  private int width;
+  private int height;
 
   public BoardArray(char boardArray[][], int width, int height) {
     this.boardArray = boardArray;
@@ -10,7 +10,7 @@ public class BoardArray {
     this.height = height;
   }
 
-  void InitialiseBoard() {
+  public void InitialiseBoard() {
 
     int row, col, column;
 
@@ -32,4 +32,15 @@ public class BoardArray {
       }
     }
   }
+
+    public void PrintBoard() {
+        int row, col;
+    
+        for (row = 0; row < height; row++) {
+        for (col = 0; col < width; col++) {
+            System.out.print(boardArray[row][col]);
+        }
+        System.out.println();
+        }
+    }
 }
