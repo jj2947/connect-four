@@ -45,7 +45,7 @@ public class LongestChain {
             Position position = new Position(count, row, col);
             positions.add(position);
           }
-
+          prevCount = count;
           count = 0;
         }
       }
@@ -77,6 +77,7 @@ public class LongestChain {
             Position position = new Position(count, row, col);
             positions.add(position);
           }
+          prevCount = count;
           count = 0;
         }
       }
