@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -24,7 +24,8 @@ public class Move {
     while (boardArray.getBoard()[1][column] != ' ') {
       // Loops through all columns to check if there are any columns that aren't full
       for (int col = 0; col < boardArray.getWidth(); col++) {
-        // If there are any columns that aren't full, ask the player to enter a valid column
+        // If there are any columns that aren't full, ask the player to enter a valid
+        // column
         if (boardArray.getBoard()[1][col] == ' ') {
           System.out.print("Invalid column, enter a valid column: ");
           column = in.nextInt();
@@ -43,8 +44,10 @@ public class Move {
       }
       i++;
 
-      /* If the column is invalid (i has already looped through all columns),
-      ask the player to enter a valid column */
+      /*
+       * If the column is invalid (i has already looped through all columns),
+       * ask the player to enter a valid column
+       */
       if (i == boardArray.getWidth() - 1) {
         System.out.print("Invalid column, enter a valid column: ");
         column = in.nextInt();
@@ -60,8 +63,11 @@ public class Move {
   public void makeMove(int move) {
     int i;
 
-    /* Loop through the boardArray from the bottom to the top and assign the player's symbol to the
-    first empty space in the column */
+    /*
+     * Loop through the boardArray from the bottom to the top and assign the
+     * player's symbol to the
+     * first empty space in the column
+     */
     for (i = boardArray.getHeight() - 1; i >= 0; i--) {
       if (boardArray.getBoard()[i][move] == ' ') {
 
@@ -77,12 +83,8 @@ public class Move {
   }
 
   // Function that checks if the player has won
-  // Function that checks if the player has won
   public int CheckWin() {
-    int count = 0;
     char symbol;
-    int row;
-    int col;
     int win = 0;
 
     // Assigns the correct symbol for each player
@@ -92,89 +94,16 @@ public class Move {
       symbol = 'O';
     }
 
-    // Check for vertical win
+    Diagonal diagonal = new Diagonal();
+    Horizontal horizontal = new Horizontal();
+    Vertical vertical = new Vertical();
 
-    for (col = 1; col < boardArray.getWidth() - 1; col++) {
-      count = 0;
-      for (row = boardArray.getHeight() - 1; row >= 0; row--) {
-        // If the symbol is the same as the player's symbol, increment count
-        if (boardArray.getBoard()[row][col] == symbol) {
-          count++;
-
-          if (count == 4) {
-            win = 1;
-          }
-        }
-
-        // If the symbol is not the same as the player's symbol, reset count and continue the loop
-        else if (boardArray.getBoard()[row][col] != symbol && count >= 1) {
-          count = 0;
-        }
-      }
+    // Checks if the player has won
+    if (diagonal.checkWin(boardArray, symbol) || horizontal.checkWin(boardArray, symbol)
+        || vertical.checkWin(boardArray, symbol)) {
+      win = 1;
     }
-
-    // Check for horizontal win
-    for (row = boardArray.getHeight() - 1; row >= 0; row--) {
-      count = 0;
-      for (col = 1; col < boardArray.getWidth() - 1; col++) {
-        // If the symbol is the same as the player's symbol, increment count
-        if (boardArray.getBoard()[row][col] == symbol) {
-          count++;
-
-          if (count == 4) {
-            win = 1;
-          }
-        }
-
-        // If the symbol is not the same as the player's symbol, reset count and continue the loop
-        else if (boardArray.getBoard()[row][col] != symbol && count >= 1) {
-          count = 0;
-        }
-      }
-    }
-
-    // Check for left diagonal win
-    int maxRow, maxCol;
-
-    for (row = 0; row < boardArray.getHeight(); row++) {
-      for (col = 0; col < boardArray.getWidth(); col++) {
-        // Set the maximum row and column to check that they will be within the boardArray bounds
-        maxRow = row - 3;
-        maxCol = col + 3;
-
-        // If the maximum row and column are within the boardArray bounds and there are 4 symbols in
-        // a left diagonal, the player has won
-        if (maxRow >= 0
-            && maxCol < boardArray.getWidth()
-            && boardArray.getBoard()[row][col] == symbol
-            && boardArray.getBoard()[row - 1][col + 1] == symbol
-            && boardArray.getBoard()[row - 2][col + 2] == symbol
-            && boardArray.getBoard()[row - 3][col + 3] == symbol) {
-          win = 1;
-        }
-      }
-    }
-
-    // Check for right diagonal win
-    for (row = 0; row < boardArray.getHeight(); row++) {
-      for (col = 0; col < boardArray.getWidth(); col++) {
-        // Set the maximum row and column to check that they will be within the boardArray bounds
-        maxRow = row - 3;
-        maxCol = col - 3;
-
-        // If the maximum row and column are within the boardArray bounds and there are 4 symbols in
-        // a right diagonal, the player has won
-        if (maxRow >= 0
-            && maxCol >= 0
-            && boardArray.getBoard()[row][col] == symbol
-            && boardArray.getBoard()[row - 1][col - 1] == symbol
-            && boardArray.getBoard()[row - 2][col - 2] == symbol
-            && boardArray.getBoard()[row - 3][col - 3] == symbol) {
-          win = 1;
-        }
-      }
-    }
-
+    
     // If the player has won, print the player that won and return 1
     if (win == 1) {
       if (player == 1) {
@@ -214,7 +143,7 @@ public class Move {
     int index;
 
     NextMove next = new NextMove(boardArray);
-    ArrayList<Position> nextMoves = next.getNextMoves();
+    List<Position> nextMoves = next.getNextMoves();
 
     Random rand = new Random();
 
