@@ -36,9 +36,7 @@ public class Diagonal implements Direction {
                         && move.validMove("", row - 3, col + 3, 3, symbol)) {
                     count = 3;
                     move.addMove(diagonalMoves, count, row - 3, col + 3);
-                }
-
-                else if (count <= 2) {
+                } else if (count < 3) {
                     if (maxRow >= -1
                             && maxCol < boardArray.getWidth() + 1
                             && boardArray.getBoard()[row][col] == symbol
@@ -46,17 +44,12 @@ public class Diagonal implements Direction {
                             && move.validMove("left diagonal", row - 2, col + 2, 2, symbol)) {
                         count = 2;
                         move.addMove(diagonalMoves, count, row - 2, col + 2);
-                    }
-
-                    else {
-                        if (maxRow >= -2
-                                && maxCol < boardArray.getWidth() + 2
-                                && boardArray.getBoard()[row][col] == symbol
-                                && move.validMove("left diagonal", row - 1, col + 1, 1, symbol)) {
-                            count = 1;
-                            move.addMove(diagonalMoves, count, row - 1, col + 1);
-
-                        }
+                    } else if (maxRow >= -2
+                            && maxCol < boardArray.getWidth() + 2
+                            && boardArray.getBoard()[row][col] == symbol
+                            && move.validMove("left diagonal", row - 1, col + 1, 1, symbol)) {
+                        count = 1;
+                        move.addMove(diagonalMoves, count, row - 1, col + 1);
                     }
                 }
             }
@@ -88,13 +81,11 @@ public class Diagonal implements Direction {
                         count = 2;
                         move.addMove(diagonalMoves, count, row - 2, col - 2);
 
-                    } else {
-                        if (maxRow >= -2 && maxCol >= -2 && boardArray.getBoard()[row][col] == symbol
-                                && move.validMove("right diagonal", row - 1, col - 1, 3, symbol)) {
-                            count = 1;
-                            move.addMove(diagonalMoves, count, row - 1, col - 1);
+                    } else if (maxRow >= -2 && maxCol >= -2 && boardArray.getBoard()[row][col] == symbol
+                            && move.validMove("right diagonal", row - 1, col - 1, 3, symbol)) {
+                        count = 1;
+                        move.addMove(diagonalMoves, count, row - 1, col - 1);
 
-                        }
                     }
                 }
             }
