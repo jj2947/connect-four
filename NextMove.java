@@ -27,7 +27,8 @@ public class NextMove {
 
     if (getNext().isEmpty()) {
       return blockMoves;
-    } else if (getNext().get(0).getCount() == 3 || blockMoves.get(0).getCount() < 2) {
+    } else if ((getNext().get(0).getCount() == 3 && blockMoves.get(0).getCount() < 3)
+        || blockMoves.get(0).getCount() < 2) {
       return getNext();
     } else {
       return blockMoves;
@@ -45,13 +46,13 @@ public class NextMove {
     if (nextMoves.isEmpty()) {
       nextMoves = longestHorizontal;
     } else {
-      compareLongestSequences(nextMoves, longestHorizontal);
+      nextMoves = compareLongestSequences(nextMoves, longestHorizontal);
     }
 
     if (nextMoves.isEmpty()) {
-      nextMoves = diagonal.getLongestSequence(boardArray, currentSymbol);
+      nextMoves = longestVertical;
     } else {
-      compareLongestSequences(nextMoves, longestVertical);
+      nextMoves = compareLongestSequences(nextMoves, longestVertical);
     }
     return nextMoves;
   }
