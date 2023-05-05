@@ -112,38 +112,38 @@ public class NextMove {
   public boolean validMove(String direction, int row, int col, int count, char symbol) {
     boolean result = false;
 
-    if (boardArray.getBoard()[row][col] != ' ' || boardArray.getBoard()[row + 1][col] == ' ') {
+    if (boardArray.getBoard()[row][col] != ' ' || boardArray.getBoard()[row + 1][col] == ' ' || boardArray.getBoard()[row][col] != symbol) {
       return false;
     }
 
     if (count == 2) {
       switch (direction) {
         case "left horizontal":
-          if (boardArray.getBoard()[row][col - 1] == ' ') {
+          if (boardArray.getBoard()[row][col - 1] == ' ' || boardArray.getBoard()[row][col - 1] == symbol) {
             result = true;
           }
           break;
 
         case "right horizontal":
-          if (boardArray.getBoard()[row][col + 1] == ' ') {
+          if (boardArray.getBoard()[row][col + 1] == ' ' || boardArray.getBoard()[row][col + 1] == symbol) {
             result = true;
           }
           break;
 
         case "left diagonal":
-          if (boardArray.getBoard()[row - 1][col + 1] == ' ') {
+          if (boardArray.getBoard()[row - 1][col + 1] == ' ' || boardArray.getBoard()[row - 1][col + 1] == symbol) {
             result = true;
           }
           break;
 
         case "right diagonal":
-          if (boardArray.getBoard()[row - 1][col - 1] == ' ') {
+          if (boardArray.getBoard()[row - 1][col - 1] == ' ' || boardArray.getBoard()[row - 1][col - 1] == symbol) {
             result = true;
           }
           break;
 
         case "vertical":
-          if (boardArray.getBoard()[row - 1][col] == ' ') {
+          if (boardArray.getBoard()[row - 1][col] == ' ' || boardArray.getBoard()[row - 1][col] == symbol) {
             result = true;
           }
           break;
@@ -158,36 +158,36 @@ public class NextMove {
       if (row > minRow && row < maxRow && col > minCol && col < maxCol) {
         switch (direction) {
           case "left horizontal":
-            if (boardArray.getBoard()[row][col - 1] == ' '
+            if ((boardArray.getBoard()[row][col - 1] == ' ' || boardArray.getBoard()[row][col - 1] == symbol)
                 && boardArray.getBoard()[row][col - 2] == ' ') {
               result = true;
             }
             break;
 
           case "right horizontal":
-            if (boardArray.getBoard()[row][col + 1] == ' '
-                && boardArray.getBoard()[row][col + 2] == ' ') {
+            if ((boardArray.getBoard()[row][col + 1] == ' ' || boardArray.getBoard()[row][col + 1] == symbol)
+                && (boardArray.getBoard()[row][col + 2] == ' ' || boardArray.getBoard()[row][col + 2] == symbol)) {
               result = true;
             }
             break;
 
           case "left diagonal":
-            if (boardArray.getBoard()[row - 1][col + 1] == ' '
-                && boardArray.getBoard()[row - 2][col + 2] == ' ') {
+            if ((boardArray.getBoard()[row - 1][col + 1] == ' ' || boardArray.getBoard()[row - 1][col + 1] == symbol)
+                && (boardArray.getBoard()[row - 2][col + 2] == ' ' || boardArray.getBoard()[row - 2][col + 2] == symbol)) {
               result = true;
             }
             break;
 
           case "right diagonal":
-            if (boardArray.getBoard()[row - 1][col - 1] == ' '
-                && boardArray.getBoard()[row - 2][col - 2] == ' ') {
+            if ((boardArray.getBoard()[row - 1][col - 1] == ' ' || boardArray.getBoard()[row - 1][col - 1] == symbol)
+                && (boardArray.getBoard()[row - 2][col - 2] == ' ' || boardArray.getBoard()[row - 2][col - 2] == symbol)) {
               result = true;
             }
             break;
 
           case "vertical":
-            if (boardArray.getBoard()[row - 1][col] == ' '
-                && boardArray.getBoard()[row - 2][col] == ' ') {
+            if ((boardArray.getBoard()[row - 1][col] == ' ' || boardArray.getBoard()[row - 1][col] == symbol)
+                && (boardArray.getBoard()[row - 2][col] == ' ' || boardArray.getBoard()[row - 2][col] == symbol)) {
               result = true;
             }
         }

@@ -62,4 +62,10 @@ public class Vertical implements Direction {
         return win;
     }
 
+    @Override
+    public List<Position> getGapSequence(BoardArray boardArray, char symbol) {
+        List<Position> gapMoves = new ArrayList<>();
+        return gapMoves;
+    }
+
 }

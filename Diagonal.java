@@ -130,4 +130,56 @@ public class Diagonal implements Direction {
         return win;
     }
 
+    @Override
+    public List<Position> getGapSequence(BoardArray boardArray, char symbol) {
+        int row, col, count;
+        NextMove move = new NextMove(boardArray);
+        List<Position> gapMoves = new ArrayList<>();
+
+        for (row = boardArray.getHeight() - 1; row >= 0; row++) {
+            for (col = 1; col < boardArray.getWidth() - 3; col++) {
+                if (move.validMove("right diagonal", row, col, 2, symbol)
+                        && move.validMove("right diagonal", row, col + 2, 2, symbol)) {
+                    count = findGapCount("right", row, col, boardArray, symbol);
+                    if (count > 1) {
+                        move.addMove(gapMoves, count, row, col);
+                    }
+                }
+
+            }
+        }
+
+        for (row = boardArray.getHeight() - 1; row >= 0; row++) {
+            for (col = 0; col < boardArray.getWidth() - 3; col++) {
+                if (move.validMove("left diagonal", row, col, 2, symbol)
+                        && move.validMove("left diagonal", row, col + 2, 2, symbol)) {
+                    count = findGapCount("left", row, col, boardArray, symbol);
+                    if (count > 1) {
+                        move.addMove(gapMoves, count, row, col);
+                    }
+                }
+            }
+        }
+        return gapMoves;
+    }
+
+    private int findGapCount(String direction, int row, int col, BoardArray boardArray, char symbol) {
+        int count = 0;
+
+        if (direction.equals("right")) {
+            for (int i = 0; i < 5; i++) {
+                if (boardArray.getBoard()[row - i][col - i] == symbol) {
+                    count++;
+                }
+            }
+        } else if (direction.equals("left")) {
+            for (int i = 0; i < 5; i++) {
+                if (boardArray.getBoard()[row - i][col + i] == symbol) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
 }

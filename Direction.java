@@ -4,4 +4,5 @@ public interface Direction {
     
     public abstract List<Position> getLongestSequence(BoardArray boardArray, char symbol);
     public abstract boolean checkWin(BoardArray boardArray, char symbol);
+    public abstract List<Position> getGapSequence(BoardArray boardArray, char symbol);
 }
