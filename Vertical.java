@@ -4,16 +4,9 @@ import java.util.List;
 public class Vertical implements Direction {
 
     @Override
-    public List<Position> getLongestSequence(BoardArray boardArray, int player) {
+    public List<Position> getLongestSequence(BoardArray boardArray, char symbol) {
         int row, col, count;
-        char symbol;
         NextMove move = new NextMove(boardArray);
-
-        if (player == 1) {
-            symbol = 'X';
-        } else {
-            symbol = 'O';
-        }
 
         // Finds longest vertical chain
         List<Position> verticalMoves = new ArrayList<>();
@@ -41,17 +34,10 @@ public class Vertical implements Direction {
     }
 
     @Override
-    public boolean checkWin(BoardArray boardArray, int player) {
+    public boolean checkWin(BoardArray boardArray, char symbol) {
 
         int row, col, count;
-        char symbol;
         boolean win = false;
-
-        if (player == 1) {
-            symbol = 'X';
-        } else {
-            symbol = 'O';
-        }
 
         // Check for vertical win
         for (col = 1; col < boardArray.getWidth() - 1; col++) {

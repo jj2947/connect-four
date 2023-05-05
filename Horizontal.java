@@ -4,18 +4,10 @@ import java.util.List;
 public class Horizontal implements Direction {
 
     @Override
-    public List<Position> getLongestSequence(BoardArray boardArray, int player) {
+    public List<Position> getLongestSequence(BoardArray boardArray, char symbol) {
         List<Position> horizontalMoves = new ArrayList<>();
 
         NextMove move = new NextMove(boardArray);
-
-        char symbol;
-
-        if (player == 1) {
-            symbol = 'X';
-        } else {
-            symbol = 'O';
-        }
 
         int count, row, col;
         count = 0;
@@ -63,17 +55,10 @@ public class Horizontal implements Direction {
     }
 
     @Override
-    public boolean checkWin(BoardArray boardArray, int player) {
+    public boolean checkWin(BoardArray boardArray, char symbol) {
         int row, col;
         int count;
         boolean win = false;
-
-        char symbol;
-        if (player == 1) {
-            symbol = 'X';
-        } else {
-            symbol = 'O';
-        }
 
         for (row = boardArray.getHeight() - 1; row >= 0; row--) {
             count = 0;
