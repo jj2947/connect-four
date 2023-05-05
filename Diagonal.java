@@ -24,17 +24,17 @@ public class Diagonal implements Direction {
                     if (boardArray.getBoard()[row][col] == symbol
                             && boardArray.getBoard()[row - 1][col + 1] == symbol
                             && boardArray.getBoard()[row - 2][col + 2] == symbol
-                            && move.validMove("", row - 3, col + 3, 3, symbol)) {
+                            && move.validMove("", "", row - 3, col + 3, 3, symbol)) {
                         count = 3;
                         move.addMove(diagonalMoves, count, row - 3, col + 3);
                     } else if (count < 3) {
                         if (boardArray.getBoard()[row][col] == symbol
                                 && boardArray.getBoard()[row - 1][col + 1] == symbol
-                                && move.validMove("left diagonal", row - 2, col + 2, 2, symbol)) {
+                                && move.validMove("", "left diagonal", row - 2, col + 2, 2, symbol)) {
                             count = 2;
                             move.addMove(diagonalMoves, count, row - 2, col + 2);
                         } else if (boardArray.getBoard()[row][col] == symbol
-                                && move.validMove("left diagonal", row - 1, col + 1, 1, symbol)) {
+                                && move.validMove("", "left diagonal", row - 1, col + 1, 1, symbol)) {
                             count = 1;
                             move.addMove(diagonalMoves, count, row - 1, col + 1);
                         }
@@ -55,19 +55,19 @@ public class Diagonal implements Direction {
                     if (boardArray.getBoard()[row][col] == symbol
                             && boardArray.getBoard()[row - 1][col - 1] == symbol
                             && boardArray.getBoard()[row - 2][col - 2] == symbol
-                            && move.validMove("", row - 3, col - 3, 3, symbol)) {
+                            && move.validMove("", "", row - 3, col - 3, 3, symbol)) {
                         count = 3;
                         move.addMove(diagonalMoves, count, row - 3, col - 3);
 
                     } else if (count < 3) {
                         if (boardArray.getBoard()[row][col] == symbol
                                 && boardArray.getBoard()[row - 1][col - 1] == symbol
-                                && move.validMove("right diagonal", row - 2, col - 2, 2, symbol)) {
+                                && move.validMove("", "right diagonal", row - 2, col - 2, 2, symbol)) {
                             count = 2;
                             move.addMove(diagonalMoves, count, row - 2, col - 2);
 
                         } else if (boardArray.getBoard()[row][col] == symbol
-                                && move.validMove("right diagonal", row - 1, col - 1, 3, symbol)) {
+                                && move.validMove("", "right diagonal", row - 1, col - 1, 3, symbol)) {
                             count = 1;
                             move.addMove(diagonalMoves, count, row - 1, col - 1);
 
@@ -137,28 +137,38 @@ public class Diagonal implements Direction {
         List<Position> gapMoves = new ArrayList<>();
 
         for (row = boardArray.getHeight() - 1; row >= 0; row++) {
-            for (col = 1; col < boardArray.getWidth() - 3; col++) {
-                if (move.validMove("right diagonal", row, col, 2, symbol)
-                        && move.validMove("right diagonal", row, col + 2, 2, symbol)) {
+            for (col = 1; col < boardArray.getWidth() - 2; col++) {
+                if (move.validMove("gap", "right diagonal", row, col, 2, symbol)
+                        && move.validMove("gap", "right diagonal", row, col + 1, 2, symbol)) {
                     count = findGapCount("right", row, col, boardArray, symbol);
                     if (count > 1) {
-                        move.addMove(gapMoves, count, row, col);
-                    }
-                }
+                        for (int i = 0; i < 4; i++) {
+                            if (boardArray.getBoard()[row - i][col - i] == ' ' && boardArray.getBoard()[row-1][col] != ' ') {
+                                move.addMove(gapMoves, count, row, col);
+                            }
 
-            }
-        }
-
-        for (row = boardArray.getHeight() - 1; row >= 0; row++) {
-            for (col = 0; col < boardArray.getWidth() - 3; col++) {
-                if (move.validMove("left diagonal", row, col, 2, symbol)
-                        && move.validMove("left diagonal", row, col + 2, 2, symbol)) {
-                    count = findGapCount("left", row, col, boardArray, symbol);
-                    if (count > 1) {
-                        move.addMove(gapMoves, count, row, col);
+                        }
                     }
+
                 }
             }
+
+            for (row = boardArray.getHeight() - 1; row >= 0; row++) {
+                for (col = 0; col < boardArray.getWidth() - 2; col++) {
+                    if (move.validMove("gap", "left diagonal", row, col, 2, symbol)
+                            && move.validMove("gap", "left diagonal", row, col + 1, 2, symbol)) {
+                        count = findGapCount("left", row, col, boardArray, symbol);
+                        if (count > 1) {
+                            for (int i = 0; i < 4; i++) {
+                                if (boardArray.getBoard()[row - i][col + i] == ' ' && boardArray.getBoard()[row - i][col + i] == ' ') {
+                                    move.addMove(gapMoves, count, row, col);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
         }
         return gapMoves;
     }
@@ -167,13 +177,13 @@ public class Diagonal implements Direction {
         int count = 0;
 
         if (direction.equals("right")) {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 4; i++) {
                 if (boardArray.getBoard()[row - i][col - i] == symbol) {
                     count++;
                 }
             }
         } else if (direction.equals("left")) {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 4; i++) {
                 if (boardArray.getBoard()[row - i][col + i] == symbol) {
                     count++;
                 }

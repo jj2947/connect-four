@@ -23,7 +23,7 @@ public class Vertical implements Direction {
                 // continue the loop
                 else if (boardArray.getBoard()[row][col] != symbol && count >= 1) {
 
-                    if (move.validMove("vertical", row, col, count, symbol)) {
+                    if (move.validMove("", "vertical", row, col, count, symbol)) {
                         move.addMove(verticalMoves, count, row, col);
                     }
                     count = 0;

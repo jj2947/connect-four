@@ -19,29 +19,33 @@ public class NextMove {
 
   public List<Position> getNextMoves() {
 
-    List<Position> blockMoves = getBlockMoves();
+    List<Position> blockMoves = getNext('X');
+    List<Position> nextMoves = getNext('O');
 
     if (blockMoves.isEmpty()) {
-      return getNext();
+      return nextMoves;
     }
 
-    if (getNext().isEmpty()) {
+    if (nextMoves.isEmpty()) {
       return blockMoves;
-    } else if ((getNext().get(0).getCount() == 3 && blockMoves.get(0).getCount() < 3)
+    } else if ((nextMoves.get(0).getCount() == 3 && blockMoves.get(0).getCount() < 3)
         || blockMoves.get(0).getCount() < 2) {
-      return getNext();
+      return nextMoves;
     } else {
       return blockMoves;
     }
   }
 
-  private List<Position> getNext() {
+  private List<Position> getNext(char currentSymbol) {
     List<Position> nextMoves = new ArrayList<>();
-    char currentSymbol = 'O';
+
+    List<Position> longestDiagonal = diagonal.getLongestSequence(boardArray, currentSymbol);
     List<Position> longestHorizontal = horizontal.getLongestSequence(boardArray, currentSymbol);
     List<Position> longestVertical = vertical.getLongestSequence(boardArray, currentSymbol);
+    List<Position> horizontalGapMoves = horizontal.getGapSequence(boardArray, currentSymbol);
+    List<Position> diagonalGapMoves = diagonal.getGapSequence(boardArray, currentSymbol);
 
-    nextMoves = diagonal.getLongestSequence(boardArray, currentSymbol);
+    nextMoves = longestDiagonal;
 
     if (nextMoves.isEmpty()) {
       nextMoves = longestHorizontal;
@@ -54,31 +58,20 @@ public class NextMove {
     } else {
       nextMoves = compareLongestSequences(nextMoves, longestVertical);
     }
+
+    if (nextMoves.isEmpty()) {
+      nextMoves = horizontalGapMoves;
+    } else {
+      nextMoves = compareLongestSequences(nextMoves, horizontalGapMoves);
+    }
+
+    if (nextMoves.isEmpty()) {
+      nextMoves = diagonalGapMoves;
+    } else {
+      nextMoves = compareLongestSequences(nextMoves, diagonalGapMoves);
+    }
+
     return nextMoves;
-  }
-
-  // Moves to block the opponent
-  private List<Position> getBlockMoves() {
-    List<Position> blockMoves = new ArrayList<>();
-    char currentSymbol = 'X';
-    List<Position> longestHorizontal = horizontal.getLongestSequence(boardArray, currentSymbol);
-    List<Position> longestVertical = vertical.getLongestSequence(boardArray, currentSymbol);
-
-    blockMoves = diagonal.getLongestSequence(boardArray, currentSymbol);
-
-    if (blockMoves.isEmpty()) {
-      blockMoves = longestHorizontal;
-    } else {
-      blockMoves = compareLongestSequences(blockMoves, longestHorizontal);
-    }
-
-    if (blockMoves.isEmpty()) {
-      blockMoves = longestVertical;
-    } else {
-      blockMoves = compareLongestSequences(blockMoves, longestVertical);
-    }
-
-    return blockMoves;
   }
 
   private List<Position> compareLongestSequences(List<Position> seq1, List<Position> seq2) {
@@ -109,10 +102,13 @@ public class NextMove {
     return nextMoves;
   }
 
-  public boolean validMove(String direction, int row, int col, int count, char symbol) {
+  public boolean validMove(String type, String direction, int row, int col, int count, char symbol) {
     boolean result = false;
 
-    if (boardArray.getBoard()[row][col] != ' ' || boardArray.getBoard()[row + 1][col] == ' ' || boardArray.getBoard()[row][col] != symbol) {
+    if (type.equals("gap") && (boardArray.getBoard()[row][col] != ' ' && boardArray.getBoard()[row][col] != symbol)
+        || boardArray.getBoard()[row + 1][col] == ' ') {
+      return false;
+    } else if (boardArray.getBoard()[row][col] != ' ' || boardArray.getBoard()[row + 1][col] == ' ') {
       return false;
     }
 
@@ -173,14 +169,16 @@ public class NextMove {
 
           case "left diagonal":
             if ((boardArray.getBoard()[row - 1][col + 1] == ' ' || boardArray.getBoard()[row - 1][col + 1] == symbol)
-                && (boardArray.getBoard()[row - 2][col + 2] == ' ' || boardArray.getBoard()[row - 2][col + 2] == symbol)) {
+                && (boardArray.getBoard()[row - 2][col + 2] == ' '
+                    || boardArray.getBoard()[row - 2][col + 2] == symbol)) {
               result = true;
             }
             break;
 
           case "right diagonal":
             if ((boardArray.getBoard()[row - 1][col - 1] == ' ' || boardArray.getBoard()[row - 1][col - 1] == symbol)
-                && (boardArray.getBoard()[row - 2][col - 2] == ' ' || boardArray.getBoard()[row - 2][col - 2] == symbol)) {
+                && (boardArray.getBoard()[row - 2][col - 2] == ' '
+                    || boardArray.getBoard()[row - 2][col - 2] == symbol)) {
               result = true;
             }
             break;

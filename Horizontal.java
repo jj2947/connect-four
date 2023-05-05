@@ -24,7 +24,7 @@ public class Horizontal implements Direction {
                 // If the symbol is not the same as the player's symbol, reset count and
                 // continue the loop
                 else if (boardArray.getBoard()[row][col] != symbol && count >= 1) {
-                    if (move.validMove("right horizontal", row, col, count, symbol)) {
+                    if (move.validMove("", "right horizontal", row, col, count, symbol)) {
                         move.addMove(horizontalMoves, count, row, col);
                     }
                     count = 0;
@@ -44,7 +44,7 @@ public class Horizontal implements Direction {
                 // If the symbol is not the same as the player's symbol, reset count and
                 // continue the loop
                 else if (boardArray.getBoard()[row][col] != symbol && count >= 1) {
-                    if (move.validMove("left horizontal", row, col, count, symbol)) {
+                    if (move.validMove("", "left horizontal", row, col, count, symbol)) {
                         move.addMove(horizontalMoves, count, row, col);
                     }
                     count = 0;
@@ -89,11 +89,17 @@ public class Horizontal implements Direction {
         List<Position> gapMoves = new ArrayList<>();
 
         for (row = boardArray.getHeight() - 1; row >= 0; row--) {
-            for (col = 1; col < boardArray.getWidth() - 3; col++) {
-                if (move.validMove("right horizontal", row, col, 2, symbol)
-                        && move.validMove("right horizontal", row, col + 2, 2, symbol)) {
+            for (col = 1; col < boardArray.getWidth() - 2; col++) {
+                if (move.validMove("gap", "right horizontal", row, col, 2, symbol)
+                        && move.validMove("gap", "right horizontal", row, col + 1, 2, symbol)) {
                     count = findGapCount(row, col, boardArray, symbol);
-                    move.addMove(gapMoves, count, row, col);
+                    if (count > 1) {
+                        for (int i = col; i < col + 4; i++) {
+                            if (boardArray.getBoard()[row][i] == ' ' && boardArray.getBoard()[row-1][col] != ' ') {
+                                move.addMove(gapMoves, count, row, col);
+                            }
+                        }
+                    }
                 }
 
             }
@@ -104,7 +110,7 @@ public class Horizontal implements Direction {
     private int findGapCount(int row, int col, BoardArray boardArray, char symbol) {
         int count = 0;
 
-        for (int i = col; i < col + 5; i++) {
+        for (int i = col; i < col + 4; i++) {
             if (boardArray.getBoard()[row][i] == symbol) {
                 count++;
             }
