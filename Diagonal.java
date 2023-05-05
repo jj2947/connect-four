@@ -136,15 +136,17 @@ public class Diagonal implements Direction {
         NextMove move = new NextMove(boardArray);
         List<Position> gapMoves = new ArrayList<>();
 
-        for (row = boardArray.getHeight() - 1; row >= 0; row++) {
+        // Find longest right diagonal sequence
+        for (row = boardArray.getHeight() - 1; row >= 0; row--) {
             for (col = 1; col < boardArray.getWidth() - 2; col++) {
                 if (move.validMove("gap", "right diagonal", row, col, 2, symbol)
-                        && move.validMove("gap", "right diagonal", row, col + 1, 2, symbol)) {
+                        && move.validMove("gap", "right diagonal", row - 1, col - 1, 1, symbol)) {
                     count = findGapCount("right", row, col, boardArray, symbol);
                     if (count > 1) {
                         for (int i = 0; i < 4; i++) {
-                            if (boardArray.getBoard()[row - i][col - i] == ' ' && boardArray.getBoard()[row-1][col] != ' ') {
-                                move.addMove(gapMoves, count, row, col);
+                            if (boardArray.getBoard()[row - i][col - i] == ' '
+                                    && boardArray.getBoard()[row -i + 1][col-i] != ' ') {
+                                move.addMove(gapMoves, count, row - i, col - i);
                             }
 
                         }
@@ -152,23 +154,24 @@ public class Diagonal implements Direction {
 
                 }
             }
+        }
 
-            for (row = boardArray.getHeight() - 1; row >= 0; row++) {
-                for (col = 0; col < boardArray.getWidth() - 2; col++) {
-                    if (move.validMove("gap", "left diagonal", row, col, 2, symbol)
-                            && move.validMove("gap", "left diagonal", row, col + 1, 2, symbol)) {
-                        count = findGapCount("left", row, col, boardArray, symbol);
-                        if (count > 1) {
-                            for (int i = 0; i < 4; i++) {
-                                if (boardArray.getBoard()[row - i][col + i] == ' ' && boardArray.getBoard()[row - i][col + i] == ' ') {
-                                    move.addMove(gapMoves, count, row, col);
-                                }
+        // Find longest left diagonal sequence
+        for (row = boardArray.getHeight() - 1; row >= 0; row--) {
+            for (col = 0; col < boardArray.getWidth() - 2; col++) {
+                if (move.validMove("gap", "left diagonal", row, col, 2, symbol)
+                        && move.validMove("gap", "left diagonal", row - 1, col + 1, 1, symbol)) {
+                    count = findGapCount("left", row, col, boardArray, symbol);
+                    if (count > 1) {
+                        for (int i = 0; i < 4; i++) {
+                            if (boardArray.getBoard()[row - i][col + i] == ' '
+                                    && boardArray.getBoard()[row - i + 1][col+i] != ' ') {
+                                move.addMove(gapMoves, count, row - i, col + i);
                             }
                         }
                     }
                 }
             }
-
         }
         return gapMoves;
     }

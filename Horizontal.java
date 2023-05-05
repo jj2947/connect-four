@@ -85,18 +85,19 @@ public class Horizontal implements Direction {
     @Override
     public List<Position> getGapSequence(BoardArray boardArray, char symbol) {
         int row, col, count;
+
         NextMove move = new NextMove(boardArray);
         List<Position> gapMoves = new ArrayList<>();
 
-        for (row = boardArray.getHeight() - 1; row >= 0; row--) {
+        for (row = boardArray.getHeight() - 2; row >= 0; row--) {
             for (col = 1; col < boardArray.getWidth() - 2; col++) {
                 if (move.validMove("gap", "right horizontal", row, col, 2, symbol)
                         && move.validMove("gap", "right horizontal", row, col + 1, 2, symbol)) {
                     count = findGapCount(row, col, boardArray, symbol);
                     if (count > 1) {
                         for (int i = col; i < col + 4; i++) {
-                            if (boardArray.getBoard()[row][i] == ' ' && boardArray.getBoard()[row-1][col] != ' ') {
-                                move.addMove(gapMoves, count, row, col);
+                            if (boardArray.getBoard()[row][i] == ' ' && boardArray.getBoard()[row+1][i] != ' ') {
+                                move.addMove(gapMoves, count, row, i);
                             }
                         }
                     }

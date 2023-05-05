@@ -28,8 +28,7 @@ public class NextMove {
 
     if (nextMoves.isEmpty()) {
       return blockMoves;
-    } else if ((nextMoves.get(0).getCount() == 3 && blockMoves.get(0).getCount() < 3)
-        || blockMoves.get(0).getCount() < 2) {
+    } else if (nextMoves.get(0).getCount() == 3 || blockMoves.get(0).getCount() < 2) {
       return nextMoves;
     } else {
       return blockMoves;
@@ -108,7 +107,7 @@ public class NextMove {
     if (type.equals("gap") && (boardArray.getBoard()[row][col] != ' ' && boardArray.getBoard()[row][col] != symbol)
         || boardArray.getBoard()[row + 1][col] == ' ') {
       return false;
-    } else if (boardArray.getBoard()[row][col] != ' ' || boardArray.getBoard()[row + 1][col] == ' ') {
+    } else if (!(type.equals("gap")) && (boardArray.getBoard()[row][col] != ' ' || boardArray.getBoard()[row + 1][col] == ' ')) {
       return false;
     }
 
@@ -151,11 +150,11 @@ public class NextMove {
       int minCol = 0;
       int minRow = 0;
 
-      if (row > minRow && row < maxRow && col > minCol && col < maxCol) {
+      if (row - 2 >= minRow && row <= maxRow && col - 2 >= minCol && col + 2 <= maxCol) {
         switch (direction) {
           case "left horizontal":
             if ((boardArray.getBoard()[row][col - 1] == ' ' || boardArray.getBoard()[row][col - 1] == symbol)
-                && boardArray.getBoard()[row][col - 2] == ' ') {
+                && (boardArray.getBoard()[row][col - 2] == ' ' || boardArray.getBoard()[row][col - 2] == symbol)) {
               result = true;
             }
             break;
