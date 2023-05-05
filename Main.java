@@ -6,6 +6,13 @@ public class Main {
 
     Scanner input = new Scanner(System.in);
 
+    System.out.println("  ______   ______   .__   __. .__   __.  _______   ______ .___________.    _  _    ");
+    System.out.println(" /      | /  __  \\  |  \\ |  | |  \\ |  | |   ____| /      ||           |   | || |   ");
+    System.out.println("|  ,----'|  |  |  | |   \\|  | |   \\|  | |  |__   |  ,----'`---|  |----`   | || |_  ");
+    System.out.println("|  |     |  |  |  | |  . `  | |  . `  | |   __|  |  |         |  |        |__   _| ");
+    System.out.println("|  `----.|  `--'  | |  |\\   | |  |\\   | |  |____ |  `----.    |  |           | |   ");
+    System.out.println(" \\______| \\______/  |__| \\__| |__| \\__| |_______| \\______|    |__|           |_|   \n");
+
     System.out.print("Enter number of players: ");
     int numPlayers = input.nextInt();
 
