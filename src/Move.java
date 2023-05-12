@@ -1,6 +1,12 @@
+package src;
+
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+
+import src.Directions.Horizontal;
+import src.Directions.Vertical;
+import src.Directions.Diagonal;
 
 public class Move {
 

@@ -1,5 +1,10 @@
+package src.Directions;
 import java.util.ArrayList;
 import java.util.List;
+
+import src.Position;
+import src.BoardArray;
+import src.NextMove;
 
 public class Horizontal implements Direction {
 

@@ -1,5 +1,11 @@
+package src;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import src.Directions.Diagonal;
+import src.Directions.Horizontal;
+import src.Directions.Vertical;
 
 public class NextMove {
 

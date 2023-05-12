@@ -1,4 +1,8 @@
+package src.Directions;
 import java.util.List;
+
+import src.Position;
+import src.BoardArray;
 
 public interface Direction {
     
