@@ -1,4 +1,4 @@
-package src.Directions;
+package src.directions;
 import java.util.List;
 
 import src.Position;

@@ -3,9 +3,9 @@ package src;
 import java.util.ArrayList;
 import java.util.List;
 
-import src.Directions.Diagonal;
-import src.Directions.Horizontal;
-import src.Directions.Vertical;
+import src.directions.Diagonal;
+import src.directions.Horizontal;
+import src.directions.Vertical;
 
 public class NextMove {
 

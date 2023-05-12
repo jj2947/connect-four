@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-import src.Directions.Horizontal;
-import src.Directions.Vertical;
-import src.Directions.Diagonal;
+import src.directions.Horizontal;
+import src.directions.Vertical;
+import src.directions.Diagonal;
 
 public class Move {
 
