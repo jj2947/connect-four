@@ -191,6 +191,9 @@ public class NextMove {
       }
     }
 
+    if (count == 3) {
+      result = true;
+    }
     return result;
   }
 }
