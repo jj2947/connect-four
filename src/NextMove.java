@@ -113,7 +113,8 @@ public class NextMove {
     if (type.equals("gap") && (boardArray.getBoard()[row][col] != ' ' && boardArray.getBoard()[row][col] != symbol)
         || boardArray.getBoard()[row + 1][col] == ' ') {
       return false;
-    } else if (!(type.equals("gap")) && (boardArray.getBoard()[row][col] != ' ' || boardArray.getBoard()[row + 1][col] == ' ')) {
+    } else if (!(type.equals("gap"))
+        && (boardArray.getBoard()[row][col] != ' ' || boardArray.getBoard()[row + 1][col] == ' ')) {
       return false;
     }
 
@@ -151,49 +152,104 @@ public class NextMove {
       }
 
     } else if (count == 1) {
-      int maxRow = boardArray.getHeight() - 1;
       int maxCol = boardArray.getWidth() - 1;
       int minCol = 0;
       int minRow = 0;
 
-      if (row - 2 >= minRow && row <= maxRow && col - 2 >= minCol && col + 2 <= maxCol) {
-        switch (direction) {
-          case "left horizontal":
-            if ((boardArray.getBoard()[row][col - 1] == ' ' || boardArray.getBoard()[row][col - 1] == symbol)
-                && (boardArray.getBoard()[row][col - 2] == ' ' || boardArray.getBoard()[row][col - 2] == symbol)) {
-              result = true;
-            }
-            break;
+      switch (direction) {
+        case "left horizontal":
+          if (col - 2 > minCol
+              && (boardArray.getBoard()[row][col - 1] == ' ' || boardArray.getBoard()[row][col - 1] == symbol)
+              && (boardArray.getBoard()[row][col - 2] == ' ' || boardArray.getBoard()[row][col - 2] == symbol)) {
+            result = true;
+          }
+          break;
 
-          case "right horizontal":
-            if ((boardArray.getBoard()[row][col + 1] == ' ' || boardArray.getBoard()[row][col + 1] == symbol)
-                && (boardArray.getBoard()[row][col + 2] == ' ' || boardArray.getBoard()[row][col + 2] == symbol)) {
-              result = true;
-            }
-            break;
+        case "right horizontal":
+          if (col + 2 < maxCol
+              && (boardArray.getBoard()[row][col + 1] == ' ' || boardArray.getBoard()[row][col + 1] == symbol)
+              && (boardArray.getBoard()[row][col + 2] == ' ' || boardArray.getBoard()[row][col + 2] == symbol)) {
+            result = true;
+          }
+          break;
 
-          case "left diagonal":
-            if ((boardArray.getBoard()[row - 1][col + 1] == ' ' || boardArray.getBoard()[row - 1][col + 1] == symbol)
-                && (boardArray.getBoard()[row - 2][col + 2] == ' '
-                    || boardArray.getBoard()[row - 2][col + 2] == symbol)) {
-              result = true;
-            }
-            break;
+        case "left diagonal":
+          if (row - 2 > minRow && col + 2 < maxCol
+              && (boardArray.getBoard()[row - 1][col + 1] == ' ' || boardArray.getBoard()[row - 1][col + 1] == symbol)
+              && (boardArray.getBoard()[row - 2][col + 2] == ' '
+                  || boardArray.getBoard()[row - 2][col + 2] == symbol)) {
+            result = true;
+          }
+          break;
 
-          case "right diagonal":
-            if ((boardArray.getBoard()[row - 1][col - 1] == ' ' || boardArray.getBoard()[row - 1][col - 1] == symbol)
-                && (boardArray.getBoard()[row - 2][col - 2] == ' '
-                    || boardArray.getBoard()[row - 2][col - 2] == symbol)) {
-              result = true;
-            }
-            break;
+        case "right diagonal":
+          if (row - 2 > minRow && col - 2 > minCol
+              && (boardArray.getBoard()[row - 1][col - 1] == ' ' || boardArray.getBoard()[row - 1][col - 1] == symbol)
+              && (boardArray.getBoard()[row - 2][col - 2] == ' '
+                  || boardArray.getBoard()[row - 2][col - 2] == symbol)) {
+            result = true;
+          }
+          break;
 
-          case "vertical":
-            if ((boardArray.getBoard()[row - 1][col] == ' ' || boardArray.getBoard()[row - 1][col] == symbol)
-                && (boardArray.getBoard()[row - 2][col] == ' ' || boardArray.getBoard()[row - 2][col] == symbol)) {
-              result = true;
-            }
-        }
+        case "vertical":
+          if (row - 2 > minRow
+              && (boardArray.getBoard()[row - 1][col] == ' ' || boardArray.getBoard()[row - 1][col] == symbol)
+              && (boardArray.getBoard()[row - 2][col] == ' ' || boardArray.getBoard()[row - 2][col] == symbol)) {
+            result = true;
+          }
+      }
+    } else if (count == 0) {
+      int maxCol = boardArray.getWidth() - 1;
+      int minCol = 0;
+      int minRow = 0;
+
+      switch (direction) {
+        case "left horizontal":
+          if (col - 3 > minCol
+              && (boardArray.getBoard()[row][col - 1] == ' ' || boardArray.getBoard()[row][col - 1] == symbol)
+              && (boardArray.getBoard()[row][col - 2] == ' ' || boardArray.getBoard()[row][col - 2] == symbol)
+              && (boardArray.getBoard()[row][col - 3] == ' ' || boardArray.getBoard()[row][col - 3] == symbol)) {
+            result = true;
+          }
+          break;
+
+        case "right horizontal":
+          if (col + 3 < maxCol
+              && (boardArray.getBoard()[row][col + 1] == ' ' || boardArray.getBoard()[row][col + 1] == symbol)
+              && (boardArray.getBoard()[row][col + 2] == ' ' || boardArray.getBoard()[row][col + 2] == symbol)
+              && (boardArray.getBoard()[row][col + 3] == ' ' || boardArray.getBoard()[row][col + 3] == symbol)) {
+            result = true;
+          }
+          break;
+
+        case "left diagonal":
+          if (row - 3 > minRow && col + 3 < maxCol
+              && (boardArray.getBoard()[row - 1][col + 1] == ' ' || boardArray.getBoard()[row - 1][col + 1] == symbol)
+              && (boardArray.getBoard()[row - 2][col + 2] == ' ' || boardArray.getBoard()[row - 2][col + 2] == symbol)
+              && (boardArray.getBoard()[row - 3][col + 3] == ' '
+                  || boardArray.getBoard()[row - 3][col + 3] == symbol)) {
+            result = true;
+          }
+          break;
+
+        case "right diagonal":
+          if (row - 3 > minRow && col - 3 > minCol
+              && (boardArray.getBoard()[row - 1][col - 1] == ' ' || boardArray.getBoard()[row - 1][col - 1] == symbol)
+              && (boardArray.getBoard()[row - 2][col - 2] == ' '
+                  || boardArray.getBoard()[row - 2][col - 2] == symbol)
+              && ((boardArray.getBoard()[row - 3][col - 3] == ' ')
+                  || boardArray.getBoard()[row - 3][col - 3] == symbol)) {
+            result = true;
+          }
+          break;
+
+        case "vertical":
+          if (row - 3 > minRow
+              && (boardArray.getBoard()[row - 1][col] == ' ' || boardArray.getBoard()[row - 1][col] == symbol)
+              && (boardArray.getBoard()[row - 2][col] == ' ' || boardArray.getBoard()[row - 2][col] == symbol)
+              && (boardArray.getBoard()[row - 3][col] == ' ' || boardArray.getBoard()[row - 3][col] == symbol)) {
+            result = true;
+          }
       }
     }
 

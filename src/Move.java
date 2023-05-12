@@ -109,7 +109,7 @@ public class Move {
         || vertical.checkWin(boardArray, symbol)) {
       win = 1;
     }
-    
+
     // If the player has won, print the player that won and return 1
     if (win == 1) {
       if (player == 1) {
@@ -152,14 +152,32 @@ public class Move {
     List<Position> nextMoves = next.getNextMoves();
 
     Random rand = new Random();
+    index = 0;
 
     if (nextMoves.size() == 0) {
       index = rand.nextInt(boardArray.getWidth());
       nextCol = index;
-    } else {
+
+      for (int row = 1; row < boardArray.getHeight(); row++) {
+        for (col = 1; col < boardArray.getWidth(); col++) {
+
+          if (next.validMove("gap", "horizontal", row, col, 0, 'O')
+              || next.validMove("gap", "vertical", row, col, 0, 'O')
+              || next.validMove("gap", "left diagonal", row, col, 0, 'O')
+              || next.validMove("gap", "right diagonal", row, col, 0, 'O')) {
+            nextMoves.add(new Position(4, row, col));
+          }
+        }
+      }
+
+    }
+
+    if (nextMoves.size() != 0) {
       index = rand.nextInt(nextMoves.size());
       Position nextMove = nextMoves.get(index);
       nextCol = nextMove.getCol();
+    } else {
+      nextCol = rand.nextInt(boardArray.getWidth());
     }
 
     // If the column is full, ask the player to enter a valid column
