@@ -72,7 +72,7 @@ public class Diagonal implements Direction {
                             move.addMove(diagonalMoves, count, row - 2, col - 2);
 
                         } else if (boardArray.getBoard()[row][col] == symbol
-                                && move.validMove("", "right diagonal", row - 1, col - 1, 3, symbol)) {
+                                && move.validMove("", "right diagonal", row - 1, col - 1, 1, symbol)) {
                             count = 1;
                             move.addMove(diagonalMoves, count, row - 1, col - 1);
 

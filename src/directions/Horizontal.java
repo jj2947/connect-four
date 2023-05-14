@@ -1,4 +1,5 @@
 package src.directions;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,12 +97,29 @@ public class Horizontal implements Direction {
 
         for (row = boardArray.getHeight() - 2; row >= 0; row--) {
             for (col = 1; col < boardArray.getWidth() - 2; col++) {
-                if (move.validMove("gap", "right horizontal", row, col, 2, symbol)
-                        && move.validMove("gap", "right horizontal", row, col + 1, 2, symbol)) {
+                if (move.validMove("gap", "right horizontal", row, col, 0, symbol)) {
                     count = findGapCount(row, col, boardArray, symbol);
                     if (count > 1) {
                         for (int i = col; i < col + 4; i++) {
-                            if (boardArray.getBoard()[row][i] == ' ' && boardArray.getBoard()[row+1][i] != ' ') {
+                            if (boardArray.getBoard()[row][i] == ' ' && boardArray.getBoard()[row + 1][i] != ' '
+                                    && boardArray.getBoard()[row][i - 1] == symbol) {
+                                move.addMove(gapMoves, count, row, i);
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+
+        for (row = boardArray.getHeight() - 2; row >= 0; row--) {
+            for (col = boardArray.getWidth() - 2; col > 0; col--) {
+                if (move.validMove("gap", "left horizontal", row, col, 0, symbol)) {
+                    count = findGapCount(row, col - 4, boardArray, symbol);
+                    if (count > 1) {
+                        for (int i = col - 3; i <= col; i++) {
+                            if (boardArray.getBoard()[row][i] == ' ' && boardArray.getBoard()[row + 1][i] != ' '
+                                    && boardArray.getBoard()[row][i + 1] == symbol) {
                                 move.addMove(gapMoves, count, row, i);
                             }
                         }
