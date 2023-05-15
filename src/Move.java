@@ -21,10 +21,21 @@ public class Move {
 
   public int getMove() {
     int valid = 0;
+    boolean correct = true;
     int i = 1;
+    int column = 0;
 
     System.out.print("Player " + player + " enter column number: ");
-    int column = in.nextInt();
+
+    do {
+      try {
+        column = Integer.parseInt(in.nextLine());
+        correct = true;
+      } catch (NumberFormatException e) {
+        System.out.print("Invalid column, enter a valid column: ");
+        correct = false;
+      }
+    } while (!correct);
 
     // If the column is full, ask the player to enter a valid column
     while (boardArray.getBoard()[1][column] != ' ') {
@@ -34,7 +45,16 @@ public class Move {
         // column
         if (boardArray.getBoard()[1][col] == ' ') {
           System.out.print("Invalid column, enter a valid column: ");
-          column = in.nextInt();
+
+          do {
+            try {
+              column = Integer.parseInt(in.nextLine());
+              correct = true;
+            } catch (NumberFormatException e) {
+              System.out.print("Invalid column, enter a valid column: ");
+              correct = false;
+            }
+          } while (!correct);
 
           // Breaks the for loop
           col = boardArray.getWidth();

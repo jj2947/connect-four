@@ -1,4 +1,4 @@
-package src;    
+package src;
 
 import java.util.Scanner;
 
@@ -6,6 +6,8 @@ public class Main {
 
   public static void main(String[] args) {
 
+    int numPlayers = 0;
+    boolean correct = true;
     Scanner input = new Scanner(System.in);
 
     System.out.println("  ______   ______   .__   __. .__   __.  _______   ______ .___________.    _  _    ");
@@ -16,13 +18,30 @@ public class Main {
     System.out.println(" \\______| \\______/  |__| \\__| |__| \\__| |_______| \\______|    |__|           |_|   \n");
 
     System.out.print("Enter number of players: ");
-    int numPlayers = input.nextInt();
+    do {
+      try {
+        numPlayers = Integer.parseInt(input.nextLine());
+        correct = true;
+      } catch (NumberFormatException e) {
+        System.out.print("Enter a valid number of players: ");
+        correct = false;
+      }
+    } while (!correct);
 
     // If the number of players is invalid, ask the user to enter a valid number of
     // players
     while (numPlayers != 1 && numPlayers != 2) {
-      System.out.print("Invalid number of players, enter a valid number of players: ");
-      numPlayers = input.nextInt();
+      System.out.print("Enter a valid number of players: ");
+      
+      do {
+        try {
+          numPlayers = Integer.parseInt(input.nextLine());
+          correct = true;
+        } catch (NumberFormatException e) {
+          System.out.print("Enter a valid number of players: ");
+          correct = false;
+        }
+      } while (!correct);
     }
 
     BoardArray boardArray = new BoardArray(new char[7][8], 8, 7);
