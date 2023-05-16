@@ -110,8 +110,7 @@ public class NextMove {
   public boolean validMove(String type, String direction, int row, int col, int count, char symbol) {
     boolean result = false;
 
-    if (type.equals("gap") && (boardArray.getBoard()[row][col] != ' ' && boardArray.getBoard()[row][col] != symbol)
-        || boardArray.getBoard()[row + 1][col] == ' ') {
+    if (type.equals("gap") && (boardArray.getBoard()[row][col] != ' ' && boardArray.getBoard()[row][col] != symbol)) {
       return false;
     } else if (!(type.equals("gap"))
         && (boardArray.getBoard()[row][col] != ' ' || boardArray.getBoard()[row + 1][col] == ' ')) {

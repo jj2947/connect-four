@@ -131,7 +131,7 @@ public class Horizontal implements Direction {
         return gapMoves;
     }
 
-    private int findGapCount(int row, int col, BoardArray boardArray, char symbol) {
+    public int findGapCount(int row, int col, BoardArray boardArray, char symbol) {
         int count = 0;
 
         for (int i = col; i < col + 4; i++) {

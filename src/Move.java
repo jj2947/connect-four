@@ -1,12 +1,12 @@
 package src;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-
+import src.directions.Diagonal;
 import src.directions.Horizontal;
 import src.directions.Vertical;
-import src.directions.Diagonal;
 
 public class Move {
 
@@ -125,7 +125,8 @@ public class Move {
     Vertical vertical = new Vertical();
 
     // Checks if the player has won
-    if (diagonal.checkWin(boardArray, symbol) || horizontal.checkWin(boardArray, symbol)
+    if (diagonal.checkWin(boardArray, symbol)
+        || horizontal.checkWin(boardArray, symbol)
         || vertical.checkWin(boardArray, symbol)) {
       win = 1;
     }
@@ -175,8 +176,33 @@ public class Move {
     index = 0;
 
     if (nextMoves.size() == 0) {
-      index = rand.nextInt(boardArray.getWidth());
-      nextCol = index;
+      for (int row = 1; row < boardArray.getHeight(); row++) {
+        for (col = 1; col < boardArray.getWidth(); col++) {
+
+          if (next.validMove("gap", "horizontal", row, col, 0, 'O')
+              || next.validMove("gap", "vertical", row, col, 0, 'O')
+              || next.validMove("gap", "left diagonal", row, col, 0, 'O')
+              || next.validMove("gap", "right diagonal", row, col, 0, 'O')) {
+            nextMoves.add(new Position(0, row, col));
+          }
+        }
+      }
+    }
+
+    List<Position> toRemove = new ArrayList<>();
+
+    // Check if a move will cause the other player to win
+    if (!nextMoves.isEmpty()) {
+      for (Position move : nextMoves) {
+        if (checkHorizontal(move, next) || checkDiagonal(move, next)) {
+          toRemove.add(move);
+        }
+      }
+    }
+
+    nextMoves.removeAll(toRemove);
+
+    if (nextMoves.size() == 0) {
 
       for (int row = 1; row < boardArray.getHeight(); row++) {
         for (col = 1; col < boardArray.getWidth(); col++) {
@@ -185,11 +211,10 @@ public class Move {
               || next.validMove("gap", "vertical", row, col, 0, 'O')
               || next.validMove("gap", "left diagonal", row, col, 0, 'O')
               || next.validMove("gap", "right diagonal", row, col, 0, 'O')) {
-            nextMoves.add(new Position(4, row, col));
+            nextMoves.add(new Position(0, row, col));
           }
         }
       }
-
     }
 
     if (nextMoves.size() != 0) {
@@ -225,5 +250,52 @@ public class Move {
         }
       }
     return nextCol;
+  }
+
+  boolean checkHorizontal(Position move, NextMove next) {
+    Horizontal horizontal = new Horizontal();
+
+    for (int i = 0; i <= 3; i++) {
+      if (move.getCol() + i < boardArray.getWidth()
+          && next.validMove("gap", "left horizontal", move.getRow() - 1, move.getCol() + i, 0, 'X')
+          && horizontal.findGapCount(move.getRow() - 1, move.getCol() + i - 3, boardArray, 'X') > 2) {
+        return true;
+      }
+
+      if (move.getCol() - i > 0
+          && next.validMove("gap", "right horizontal", move.getRow() - 1, move.getCol() - i, 0, 'X')
+          && horizontal.findGapCount(move.getRow() - 1, move.getCol() - i, boardArray, 'X') > 2) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  boolean checkDiagonal(Position move, NextMove next) {
+    Diagonal diagonal = new Diagonal();
+
+    for (int i = -1; i <= 2; i++) {
+      if (move.getRow() + i < boardArray.getHeight()
+          && move.getCol() - i - 1 > 0
+          && next.validMove(
+              "gap", "left diagonal", move.getRow() + i, move.getCol() - i - 1, 0, 'X')
+          && diagonal.findGapCount(
+                  "left", move.getRow() + i, move.getCol() - i - 1, boardArray, 'X')
+              > 2) {
+        return true;
+      }
+
+      if (move.getRow() + i < boardArray.getHeight()
+          && move.getCol() + i + 1 < boardArray.getWidth()
+          && next.validMove(
+              "gap", "right diagonal", move.getRow() + i, move.getCol() + i + 1, 0, 'X')
+          && diagonal.findGapCount(
+                  "right", move.getRow() + i, move.getCol() + i + 1, boardArray, 'X')
+              > 2) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
