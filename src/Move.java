@@ -8,6 +8,7 @@ import src.directions.Diagonal;
 import src.directions.Horizontal;
 import src.directions.Vertical;
 
+// Class for getting the player's move
 public class Move {
 
   private int player;
@@ -261,6 +262,7 @@ public class Move {
     return nextCol;
   }
 
+  // Checks if a move will cause the other player to win in a horizontal direction
   boolean checkHorizontal(Position move, NextMove next) {
     Horizontal horizontal = new Horizontal();
 
@@ -281,6 +283,7 @@ public class Move {
     return false;
   }
 
+  // Checks if a move will cause the other player to win in a diagonal direction
   boolean checkDiagonal(Position move, NextMove next) {
     Diagonal diagonal = new Diagonal();
 

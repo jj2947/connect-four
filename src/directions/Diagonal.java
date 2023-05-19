@@ -6,9 +6,9 @@ import src.BoardArray;
 import src.NextMove;
 import src.Position;
 
-public class Diagonal implements Direction {
+// Class for the diagonal direction
+public class Diagonal {
 
-  @Override
   public List<Position> getLongestSequence(BoardArray boardArray, char symbol) {
     // Finds longest diagonal sequence
     List<Position> diagonalMoves = new ArrayList<>();
@@ -83,7 +83,6 @@ public class Diagonal implements Direction {
     return diagonalMoves;
   }
 
-  @Override
   public boolean checkWin(BoardArray boardArray, char symbol) {
     // Check for left diagonal win
     int maxRow, maxCol, row, col;
@@ -134,7 +133,6 @@ public class Diagonal implements Direction {
     return win;
   }
 
-  @Override
   public List<Position> getGapSequence(BoardArray boardArray, char symbol) {
     int row, col, count;
     NextMove move = new NextMove(boardArray);
@@ -178,6 +176,7 @@ public class Diagonal implements Direction {
     return gapMoves;
   }
 
+  // Helper method that finds the number of symbols in a diagonal sequence
   public int findGapCount(String direction, int row, int col, BoardArray boardArray, char symbol) {
     int count = 0;
 

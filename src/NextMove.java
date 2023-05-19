@@ -6,6 +6,7 @@ import src.directions.Diagonal;
 import src.directions.Horizontal;
 import src.directions.Vertical;
 
+// Class for getting the computer's next move
 public class NextMove {
 
   private BoardArray boardArray;
@@ -24,15 +25,19 @@ public class NextMove {
     this.boardArray = boardArray;
   }
 
+  // Gets the arraylist of the best possible next moves
   public List<Position> getNextMoves() {
 
     List<Position> blockMoves = getNext('X');
     List<Position> nextMoves = getNext('O');
 
+    // If there are no valid moves to block the human player, return best next moves for the
+    // computer player
     if (blockMoves.isEmpty()) {
       return nextMoves;
     }
 
+    // Selects the best moves to return
     if (nextMoves.isEmpty()) {
       return blockMoves;
     } else if (nextMoves.get(0).getCount() == 3 || blockMoves.get(0).getCount() < 2) {
@@ -45,12 +50,14 @@ public class NextMove {
   private List<Position> getNext(char currentSymbol) {
     List<Position> nextMoves = new ArrayList<>();
 
+    // Gets the longest sequence and longest gap for each direction
     List<Position> longestDiagonal = diagonal.getLongestSequence(boardArray, currentSymbol);
     List<Position> longestHorizontal = horizontal.getLongestSequence(boardArray, currentSymbol);
     List<Position> longestVertical = vertical.getLongestSequence(boardArray, currentSymbol);
     List<Position> horizontalGapMoves = horizontal.getGapSequence(boardArray, currentSymbol);
     List<Position> diagonalGapMoves = diagonal.getGapSequence(boardArray, currentSymbol);
 
+    // Compares the longest sequences and longest gaps to get the best possible next moves
     nextMoves = longestDiagonal;
 
     if (nextMoves.isEmpty()) {
@@ -80,6 +87,8 @@ public class NextMove {
     return nextMoves;
   }
 
+  // Helper method that compares the longest sequences and longest gaps to get the best possible
+  // next moves
   private List<Position> compareLongestSequences(List<Position> seq1, List<Position> seq2) {
     if (!seq2.isEmpty()) {
       if (seq2.get(0).getCount() > seq1.get(0).getCount()) {
@@ -91,15 +100,21 @@ public class NextMove {
     return seq1;
   }
 
+  // Helper method that adds the best possible next moves to the arraylist
   public List<Position> addMove(List<Position> nextMoves, int count, int row, int col) {
 
+    // If the arraylist is empty, add the move
     if (nextMoves.isEmpty()) {
       Position position = new Position(count, row, col);
       nextMoves.add(position);
+      // If the count of the move is greater than the count of the last move in the arraylist,
+      // remove all the current moves and add the new move
     } else if (nextMoves.get(nextMoves.size() - 1).getCount() < count) {
       nextMoves.clear();
       Position position = new Position(count, row, col);
       nextMoves.add(position);
+      // If the count of the new move and count of moves in the arraylist is the same, add the new
+      // move
     } else if (count == nextMoves.get(nextMoves.size() - 1).getCount()) {
       Position position = new Position(count, row, col);
       nextMoves.add(position);
@@ -108,17 +123,22 @@ public class NextMove {
     return nextMoves;
   }
 
+  // Method that checks if a move is valid for either player
   public boolean validMove(
       String type, String direction, int row, int col, int count, char symbol) {
 
+    // If the move is a gap move, check if the position is empty
     if (type.equals("gap")
         && (boardArray.getBoard()[row][col] != ' ' && boardArray.getBoard()[row][col] != symbol)) {
       return false;
+      // If the move is not a gap move, check if the position is empty and the position below is not
+      // empty
     } else if (!(type.equals("gap"))
         && (boardArray.getBoard()[row][col] != ' ' || boardArray.getBoard()[row + 1][col] == ' ')) {
       return false;
     }
 
+    // Algorithm for checking if a move is valid for different counts
     if (count == 2) {
       switch (direction) {
         case "left horizontal":

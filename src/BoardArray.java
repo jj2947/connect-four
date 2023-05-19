@@ -1,17 +1,20 @@
 package src;
 
+// Class for the board
 public class BoardArray {
 
   private char boardArray[][];
   private int width;
   private int height;
 
+  // Constructor
   public BoardArray(char boardArray[][], int width, int height) {
     this.boardArray = boardArray;
     this.width = width;
     this.height = height;
   }
 
+  // Function that initialises the board based on the dimensions
   public void initialiseBoard() {
 
     int row, col, column;
@@ -35,6 +38,7 @@ public class BoardArray {
     }
   }
 
+  // Method that prints the board
   public void printBoard() {
 
     int row, col;
@@ -42,21 +46,21 @@ public class BoardArray {
     System.out.print("  ");
 
     // Prints the column numbers on top of the board
-    for (col = 0; col < width - 2; col++)
-    {
-        System.out.print(col + 1 + " ");
+    for (col = 0; col < width - 2; col++) {
+      System.out.print(col + 1 + " ");
     }
 
     System.out.println();
 
     for (row = 0; row < height; row++) {
       for (col = 0; col < width; col++) {
-        System.out.print(boardArray[row][col]+ " ");
+        System.out.print(boardArray[row][col] + " ");
       }
       System.out.println();
     }
   }
 
+  // Getters and setters
   public int getWidth() {
     return width;
   }
