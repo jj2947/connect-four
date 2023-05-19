@@ -14,11 +14,13 @@ public class Move {
   private Scanner in = new Scanner(System.in);
   private BoardArray boardArray;
 
+  // Constructor
   public Move(int player, BoardArray boardArray) {
     this.player = player;
     this.boardArray = boardArray;
   }
 
+  // Function that gets the human player's move
   public int getMove() {
     int valid = 0;
     boolean correct = true;
@@ -27,6 +29,7 @@ public class Move {
 
     System.out.print("Player " + player + " enter column number: ");
 
+    // Checks if the input is valid
     do {
       try {
         column = Integer.parseInt(in.nextLine());
@@ -39,13 +42,16 @@ public class Move {
 
     // If the column is full, ask the player to enter a valid column
     while (boardArray.getBoard()[1][column] != ' ') {
+
       // Loops through all columns to check if there are any columns that aren't full
       for (int col = 0; col < boardArray.getWidth(); col++) {
+
         // If there are any columns that aren't full, ask the player to enter a valid
         // column
         if (boardArray.getBoard()[1][col] == ' ') {
           System.out.print("Invalid column, enter a valid column: ");
 
+          // Checks if the input is valid
           do {
             try {
               column = Integer.parseInt(in.nextLine());
@@ -76,7 +82,17 @@ public class Move {
        */
       if (i == boardArray.getWidth() - 1) {
         System.out.print("Invalid column, enter a valid column: ");
-        column = in.nextInt();
+
+        // Checks if the input is valid
+        do {
+          try {
+            column = Integer.parseInt(in.nextLine());
+            correct = true;
+          } catch (NumberFormatException e) {
+            System.out.print("Invalid column, enter a valid column: ");
+            correct = false;
+          }
+        } while (!correct);
 
         // Reset i to 1 to check if the column is valid again in the while loop
         i = 1;
@@ -89,11 +105,8 @@ public class Move {
   public void makeMove(int move) {
     int i;
 
-    /*
-     * Loop through the boardArray from the bottom to the top and assign the
-     * player's symbol to the
-     * first empty space in the column
-     */
+    /* Loop through the boardArray from the bottom to the top and assign the player's
+    symbol to the first empty space in the column */
     for (i = boardArray.getHeight() - 1; i >= 0; i--) {
       if (boardArray.getBoard()[i][move] == ' ') {
 
@@ -120,6 +133,7 @@ public class Move {
       symbol = 'O';
     }
 
+    // Creates objects for each direction
     Diagonal diagonal = new Diagonal();
     Horizontal horizontal = new Horizontal();
     Vertical vertical = new Vertical();
@@ -163,35 +177,25 @@ public class Move {
     return 0;
   }
 
+  // Function that gets the computer player's move
   public int getMove2() {
 
     int nextCol;
     int col;
     int index;
 
+    // Creates a new NextMove object
     NextMove next = new NextMove(boardArray);
+
+    // Gets the next moves
     List<Position> nextMoves = next.getNextMoves();
 
     Random rand = new Random();
     index = 0;
 
-    if (nextMoves.size() == 0) {
-      for (int row = 1; row < boardArray.getHeight(); row++) {
-        for (col = 1; col < boardArray.getWidth(); col++) {
-
-          if (next.validMove("gap", "horizontal", row, col, 0, 'O')
-              || next.validMove("gap", "vertical", row, col, 0, 'O')
-              || next.validMove("gap", "left diagonal", row, col, 0, 'O')
-              || next.validMove("gap", "right diagonal", row, col, 0, 'O')) {
-            nextMoves.add(new Position(0, row, col));
-          }
-        }
-      }
-    }
-
     List<Position> toRemove = new ArrayList<>();
 
-    // Check if a move will cause the other player to win
+    // Check if a move will cause the other player to win and remove it
     if (!nextMoves.isEmpty()) {
       for (Position move : nextMoves) {
         if (checkHorizontal(move, next) || checkDiagonal(move, next)) {
@@ -199,28 +203,33 @@ public class Move {
         }
       }
     }
-
     nextMoves.removeAll(toRemove);
 
-    if (nextMoves.size() == 0) {
-
+    // If there are no nextmoves, get a move that makes it possible for the computer to win
+    if (nextMoves.isEmpty()) {
       for (int row = 1; row < boardArray.getHeight(); row++) {
         for (col = 1; col < boardArray.getWidth(); col++) {
 
-          if (next.validMove("gap", "horizontal", row, col, 0, 'O')
-              || next.validMove("gap", "vertical", row, col, 0, 'O')
-              || next.validMove("gap", "left diagonal", row, col, 0, 'O')
-              || next.validMove("gap", "right diagonal", row, col, 0, 'O')) {
-            nextMoves.add(new Position(0, row, col));
+          Position move = new Position(0, row, col);
+
+          if ((next.validMove("gap", "horizontal", row, col, 0, 'O')
+                  || next.validMove("gap", "vertical", row, col, 0, 'O')
+                  || next.validMove("gap", "left diagonal", row, col, 0, 'O')
+                  || next.validMove("gap", "right diagonal", row, col, 0, 'O'))
+              && (!checkHorizontal(move, next) || !checkDiagonal(move, next))) {
+            nextMoves.add(move);
           }
         }
       }
     }
 
+    // If there are no nextmoves, get a random move
     if (nextMoves.size() != 0) {
       index = rand.nextInt(nextMoves.size());
       Position nextMove = nextMoves.get(index);
       nextCol = nextMove.getCol();
+
+      // Get a random move from the nextMoves list
     } else {
       nextCol = rand.nextInt(boardArray.getWidth());
     }
@@ -258,7 +267,8 @@ public class Move {
     for (int i = 0; i <= 3; i++) {
       if (move.getCol() + i < boardArray.getWidth()
           && next.validMove("gap", "left horizontal", move.getRow() - 1, move.getCol() + i, 0, 'X')
-          && horizontal.findGapCount(move.getRow() - 1, move.getCol() + i - 3, boardArray, 'X') > 2) {
+          && horizontal.findGapCount(move.getRow() - 1, move.getCol() + i - 3, boardArray, 'X')
+              > 2) {
         return true;
       }
 
