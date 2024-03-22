@@ -7,9 +7,10 @@ public class Main {
 
   public static void main(String[] args) {
 
-    int numPlayers = 0;
-    boolean correct = true;
     Scanner input = new Scanner(System.in);
+    int width;
+    int height;
+    int numPlayers;
 
     System.out.println(
         "  ______   ______   .__   __. .__   __.  _______   ______ .___________.    _  _    ");
@@ -25,37 +26,12 @@ public class Main {
         " \\______| \\______/  |__| \\__| |__| \\__| |_______| \\______|    |__|           |_|  "
             + " \n");
 
-    System.out.print("Enter number of players: ");
-
-    do {
-      try {
-        numPlayers = Integer.parseInt(input.nextLine());
-        correct = true;
-      } catch (NumberFormatException e) {
-        System.out.print("Enter a valid number of players: ");
-        correct = false;
-      }
-    } while (!correct);
-
-    // If the number of players is invalid, ask the user to enter a valid number of
-    // players
-    while (numPlayers != 1 && numPlayers != 2) {
-      System.out.print("Enter a valid number of players: ");
-
-      // Checks if the input is valid
-      do {
-        try {
-          numPlayers = Integer.parseInt(input.nextLine());
-          correct = true;
-        } catch (NumberFormatException e) {
-          System.out.print("Enter a valid number of players: ");
-          correct = false;
-        }
-      } while (!correct);
-    }
+    numPlayers = getUserInput(input, "Enter number of players: ", true);
+    width = getUserInput(input, "Enter the width of the board (Max 10): ", false);
+    height = getUserInput(input, "Enter the height of the board (Max 10): ", false);
 
     // Creates a new board
-    BoardArray boardArray = new BoardArray(new char[7][8], 8, 7);
+    BoardArray boardArray = new BoardArray(new char[height + 2][width + 2], width + 2, height + 2);
 
     boardArray.initialiseBoard();
     boardArray.printBoard();
@@ -101,5 +77,26 @@ public class Main {
       }
     }
     input.close();
+  }
+
+  private static int getUserInput(Scanner input, String prompt, boolean isNumPlayers) {
+    int number = 0;
+    boolean correct;
+    System.out.print(prompt);
+    do {
+      try {
+        number = Integer.parseInt(input.nextLine());
+        if ((isNumPlayers && (number != 1 && number != 2)) || !isNumPlayers && number > 10) {
+          System.out.print("Invalid input, please enter a valid number: ");
+          correct = false;
+        } else {
+          correct = true;
+        }
+      } catch (NumberFormatException e) {
+        System.out.print("Invalid input, please enter a valid number: ");
+        correct = false;
+      }
+    } while (!correct);
+    return number;
   }
 }
