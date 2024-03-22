@@ -23,23 +23,12 @@ public class Move {
 
   // Function that gets the human player's move
   public int getMove() {
-    int valid = 0;
-    boolean correct = true;
-    int i = 1;
-    int column = 0;
+    int column;
 
     System.out.print("Player " + player + " enter column number: ");
 
     // Checks if the input is valid
-    do {
-      try {
-        column = Integer.parseInt(in.nextLine());
-        correct = true;
-      } catch (NumberFormatException e) {
-        System.out.print("Invalid column, enter a valid column: ");
-        correct = false;
-      }
-    } while (!correct);
+    column = checkColumn();
 
     // If the column is full, ask the player to enter a valid column
     while (boardArray.getBoard()[1][column] != ' ') {
@@ -53,50 +42,11 @@ public class Move {
           System.out.print("Invalid column, enter a valid column: ");
 
           // Checks if the input is valid
-          do {
-            try {
-              column = Integer.parseInt(in.nextLine());
-              correct = true;
-            } catch (NumberFormatException e) {
-              System.out.print("Invalid column, enter a valid column: ");
-              correct = false;
-            }
-          } while (!correct);
+          column = checkColumn();
 
           // Breaks the for loop
           col = boardArray.getWidth();
         }
-      }
-    }
-
-    // Ignore any invalid columns
-    while (valid == 0 && i < boardArray.getWidth() - 1) {
-      if (i == column) {
-        valid = 1;
-        break;
-      }
-      i++;
-
-      /*
-       * If the column is invalid (i has already looped through all columns),
-       * ask the player to enter a valid column
-       */
-      if (i == boardArray.getWidth() - 1) {
-        System.out.print("Invalid column, enter a valid column: ");
-
-        // Checks if the input is valid
-        do {
-          try {
-            column = Integer.parseInt(in.nextLine());
-            correct = true;
-          } catch (NumberFormatException e) {
-            System.out.print("Invalid column, enter a valid column: ");
-            correct = false;
-          }
-        } while (!correct);
-
-        // Reset i to 1 to check if the column is valid again in the while loop
-        i = 1;
       }
     }
     return column;
@@ -224,13 +174,13 @@ public class Move {
       }
     }
 
-    // If there are no nextmoves, get a random move
+    // Get a random move from the nextMoves list
     if (nextMoves.size() != 0) {
       index = rand.nextInt(nextMoves.size());
       Position nextMove = nextMoves.get(index);
       nextCol = nextMove.getCol();
 
-      // Get a random move from the nextMoves list
+      // If there are no nextmoves, get a random move
     } else {
       nextCol = rand.nextInt(boardArray.getWidth());
     }
@@ -310,5 +260,24 @@ public class Move {
     }
 
     return false;
+  }
+
+  private int checkColumn() {
+    int column = 0;
+    boolean correct;
+    // Checks if the input is valid
+    do {
+      try {
+        column = Integer.parseInt(in.nextLine());
+        correct = column >= 1 && column < boardArray.getWidth() - 1;
+        if (correct == false) {
+          System.out.print("Invalid column, enter a valid column: ");
+        }
+      } catch (NumberFormatException e) {
+        System.out.print("Invalid column, enter a valid column: ");
+        correct = false;
+      }
+    } while (!correct);
+    return column;
   }
 }
