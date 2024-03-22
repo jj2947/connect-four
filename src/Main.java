@@ -86,7 +86,7 @@ public class Main {
     do {
       try {
         number = Integer.parseInt(input.nextLine());
-        if ((isNumPlayers && (number != 1 && number != 2)) || !isNumPlayers && number > 10) {
+        if ((isNumPlayers && (number != 1 && number != 2)) || !isNumPlayers && (number > 10 || number <= 0)) {
           System.out.print("Invalid input, please enter a valid number: ");
           correct = false;
         } else {
