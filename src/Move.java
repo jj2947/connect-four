@@ -149,7 +149,7 @@ public class Move {
     // Check if a move will cause the other player to win and remove it
     if (!nextMoves.isEmpty()) {
       for (Position move : nextMoves) {
-        if (checkHorizontal(move, next) || checkDiagonal(move, next)) {
+        if ((checkHorizontal(move, next) || checkDiagonal(move, next)) && move.getCount() < 3) {
           toRemove.add(move);
         }
       }
